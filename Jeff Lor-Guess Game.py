@@ -1,6 +1,9 @@
-print("GuessGame")
+# Remember, INPUTS FROM USERS ARE ALWAYS (!!!)
+# OF TYPE STRING!!!!
 
 # random Numbers
-import random # This should be on line 1
+import random
 print(random.randint(1,50))
+
+def
 

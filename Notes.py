@@ -76,7 +76,7 @@ print(algebra_hw(7))
 # if statements
 
 
-def grade_calc(percentage) :
+def grade_calc(percentage):
     if percentage >= 90:
         return "A"
     elif percentage >= 80: # else if
@@ -119,3 +119,15 @@ for num in range(10):
 import random # This should be on line 1
 print(random.randint(0,1000))
 
+# Recasting
+c = '1'
+print(c == 1)  # we have a string and an int
+print(int(c) == 1)
+print(c == str(1))
+
+
+# Comparisons
+
+print(1 == 1)  # Use a double equal sign
+print(1 != 2)  #1 is not equal to 2
+print(not False)
