@@ -21,4 +21,19 @@ and prints out name_p
 
 def add_py(Mike):
     print("%s.py" % name) # Solution 1
-    print(name + ".py")  #Solution 2
+    print(name + ".py")  # Solution 2
+
+
+# 12.8.17
+"""
+Write a function called "date"
+that takes in three parameters,
+"month", "day", and "year" and
+prints out the date, separated by a "/"
+
+example:
+date(12, 8, 17) == "12/8/17"
+"""
+def date(month), day, year):
+    print(str(month + "/" + str(day) + "/" + year)
+    print("%s/%s/%s" % (month, day, year))

@@ -7,9 +7,17 @@
 # 4. Add "Higher" and "Lower"
 # 5. Add 5 guesses
 
+print("Guessgame")
+
 # random Numbers
 import random
 print(random.randint(1,50))
 
-input(24)
+
+
+
+
+
+
+
 
