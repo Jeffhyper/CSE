@@ -14,10 +14,10 @@ import random
 print(random.randint(1,50))
 
 
+while guessesTaken < 5:
+      print("Take a guess")
+      guess = input()
+      guess = int(guess)
 
-
-
-
-
-
+guessesTaken = 1
 
