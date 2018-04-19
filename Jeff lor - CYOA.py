@@ -234,7 +234,7 @@ gold = Key("Golden Key", "The key has been dropped", "It did nothing", "It did n
 
 # Characters
 character = Character("%", 100, "Your job is to explore an old house and find the secret of the "
-                                "chest that was made by a  pirate.", "You have died", "Inventory",)
+                                "chest that was made by a  pirate.", "You have died", "Inventory")
 
 # Rooms
 Main = Room("The main room", "You are at the main room. There are 4 rooms.", "Empty", None, None, None, None, None,
