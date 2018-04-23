@@ -132,7 +132,7 @@ class Note(Item):
 
 
 class Chest(Item):
-    def __init__(self, name, drop, attack, defend, equip, description,):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(Chest, self).__init__(name, drop, attack, defend, equip, description)
 
     def use_key(self):
@@ -198,12 +198,13 @@ gold_bar = Item("Gold bar", "The item has been dropped", "It did nothing", "This
                 "You took out the gold bar", "This item tells that you're getting close.")
 chest = Item("Chest", "The chest has been dropped", "It is too heavy.", "It's too heavy to use this as a defense",
              "You took the chest out", "The chest can only be open by a gold key.")
-letter = Item("Letter", "The letter has been dropped", "The letter is not a weapon", "It cannot defend you.",
-              "You took out the letter.", "The letter seems to say something.")
-note = Item("Note", "The note has been dropped", "It did nothing", "It did nothing", "You took out the note.",
-            "The note seems to tell were the last key could be.")
-gloves = Item("Gloves", "The gloves has been dropped", "It did nothing", "It did nothing", "You wear the gloves.",
-              "These gloves can handle such things like a poison potion. If it takes to many damage, it can disappear.")
+letter = Letter("Letter", "The letter has been dropped", "The letter is not a weapon", "It cannot defend you.",
+                "You took out the letter", "The letter seems to say something.", "Read the letter")
+note = Note("Note", "The note has been dropped", "It did nothing", "It did nothing", "You took out the note.",
+            "The note seems to tell were the last key could be.", "There are clues on this note")
+gloves = Gloves("Gloves", "The gloves has been dropped", "It did nothing", "It did nothing", "You wear the gloves.",
+                "These gloves can handle such things like a poison potion. "
+                "If it takes to many damage, it can disappear.", "It can grab")
 lantern = Item("Lantern", "The lantern has been dropped", "You can't use a lantern to attack",
                "A lantern cannot defend you", "The lantern has been equipped",
                "The lantern can be turn on and it can help you see in the dark.")
@@ -234,17 +235,17 @@ gold = Key("Golden Key", "The key has been dropped", "It did nothing", "It did n
 
 # Characters
 character = Character("%", 100, "Your job is to explore an old house and find the secret of the "
-                                "chest that was made by a  pirate.", "You have died", "Inventory")
+                                "chest that was made by a  pirate.", "You have died", [])
 
 # Rooms
 Main = Room("The main room", "You are at the main room. There are 4 rooms.", "Empty", None, None, None, None, None,
             None)
 Empty = Room("Empty room", "You are at an empty room. There is a letter in the middle of the room.", None, "Main", None,
-             "Garage", None, None, "letter")
+             "Garage", None, None, letter)
 Garage = Room("Garage", "You are at a garage. There seems to be a key inside a toolbox.", "Kitchen", None, "Empty",
-              None, None, None, "jade")
+              None, None, None, jade)
 Kitchen = Room("Kitchen", "You are at the kitchen. There is nothing here.", None, "Garage", "Diner", None, None, "Box",
-               "hamburger")
+               hamburger)
 Diner = Room("Diner room", "You are at the diner room. There is a bottle of water on the table.", None, None, "Resting",
              "Kitchen", None, None, "water_bottle")
 Resting = Room("Resting room", "You are at a resting room. There are a lot of couches here.", "Quiet", None, None,
@@ -267,9 +268,9 @@ Lab = Room("Lab", "You are in the lab. There is a potion on a shelf.", None, "Wo
 Studio = Room("Studio", "You are in a studio.", None, "Work", "Lab", None, None, None, None)
 Living = Room("Living room", "You are at the living room. There are 2 rooms.", None, "Mini_Library",
               "Hall_of_Portraits_of_art", "Box", None, None, "gold_bar")
-Mini_Library = Room("Mini Library", "You are in Mini library. There seems to be a book on the ground.", "Living",
+Mini_Library = Room("Mini Library", "You are in Mini library. There seems to be a book on the the ground.", "Living",
                     "Secret", None, None, None, None, "green_book")
-Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms. "
+Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
                              "There seems to be a lantern by the door it will help you see in the dark.",
               "Mini_Library", "Camera", "Closet", None, None, None, "lantern")
 Camera = Room("Camera room", "You are in a camera room. The camera's seems to show every room."
@@ -299,3 +300,4 @@ while True:
 
     else:
         print("Command not recognized")
+
