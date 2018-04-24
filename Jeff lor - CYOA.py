@@ -68,30 +68,30 @@ class Poison(Potion):
 
 
 class Axe(Item):
-    def __init__(self, name, drop, attack, defend, equip, description, chop):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(Axe, self).__init__(name, drop, attack, defend, equip, description)
-        self.chop = chop
 
     def chop_doors(self):
         print("The door has been chop down into wood.")
 
 
 class Hamburger(Item):
-    def __init__(self, name, drop, attack, defend, equip, description, eat):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(Hamburger, self).__init__(name, drop, attack, defend, equip, description)
-        self.eat = eat
 
     def eat(self):
         print("You ate the hamburger. It restored half of your health.")
 
 
 class WaterBottle(Item):
-    def __init__(self, name, drop, attack, defend, equip, description, drink):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(WaterBottle, self).__init__(name, drop, attack, defend, equip, description)
-        self.drink = drink
 
     def pour_water(self):
         print("You poured the water.")
+
+    def drink(self):
+        print("You drinked the water")
 
 
 class GreenBook(Item):
@@ -114,9 +114,8 @@ class Lantern(Item):
 
 
 class Gloves(Item):
-    def __init__(self, name, drop, attack, defend, equip, description, grab):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(Gloves, self).__init__(name, drop, attack, defend, equip, description)
-        self.grab = grab
 
     def protect_hands(self):
         print("Your hands are now protected from things that can harm your hands.")
@@ -202,16 +201,16 @@ letter = Letter("Letter", "The letter has been dropped", "The letter is not a we
                 "You took out the letter", "The letter seems to say something.", "Read the letter")
 note = Note("Note", "The note has been dropped", "It did nothing", "It did nothing", "You took out the note.",
             "The note seems to tell were the last key could be.", "There are clues on this note")
-gloves = Gloves("Gloves", "The gloves has been dropped", "It did nothing", "It did nothing", "You wear the gloves.",
-                "These gloves can handle such things like a poison potion. "
-                "If it takes to many damage, it can disappear.", "It can grab")
-lantern = Item("Lantern", "The lantern has been dropped", "You can't use a lantern to attack",
-               "A lantern cannot defend you", "The lantern has been equipped",
-               "The lantern can be turn on and it can help you see in the dark.")
+gloves = Item("Gloves", "The gloves has been dropped", "It did nothing", "It did nothing", "You wear the gloves.",
+              "These gloves can handle such things like a poison potion."
+              "If it takes to many damage, it can disappear.")
+lantern = Lantern("Lantern", "The lantern has been dropped", "You can't use a lantern to attack",
+                  "A lantern cannot defend you", "The lantern has been equipped",
+                  "The lantern can be turn on and it can help you see in the dark.", "The glow is yellow")
 green_book = Item("Green book", "The book has been dropped", "It did nothing", "It did nothing",
                   "You took out the book", "The book seems to tell the backstory of the golden key. "
                                            "You are only to be able to read half of it.")
-water_Bottle = Item("Water bottle", "The Item has been dropped", "It did nothing", "It did nothing",
+water_bottle = Item("Water bottle", "The Item has been dropped", "It did nothing", "It did nothing",
                     "You took out the bottle", "This is not any ordinary water, "
                                                "if you drink it you are able to hold a potion.")
 hamburger = Item("Hamburger", "The item has been dropped", "It did nothing", "It did nothing",
@@ -231,7 +230,7 @@ key = Item("Key", "The key has been dropped", "It did nothing", "It did nothing"
 jade = Key("Jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
            "This key can only open a door with a jade lock hole", "Find a jade lock hole")
 gold = Key("Golden Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the golden key out",
-           "This key can open a chest, not doors.", "Find a chest")
+           "This key can open a chest, not doors.", "Find a chest and use this key to open it.")
 
 # Characters
 character = Character("%", 100, "Your job is to explore an old house and find the secret of the "
@@ -247,37 +246,37 @@ Garage = Room("Garage", "You are at a garage. There seems to be a key inside a t
 Kitchen = Room("Kitchen", "You are at the kitchen. There is nothing here.", None, "Garage", "Diner", None, None, "Box",
                hamburger)
 Diner = Room("Diner room", "You are at the diner room. There is a bottle of water on the table.", None, None, "Resting",
-             "Kitchen", None, None, "water_bottle")
+             "Kitchen", None, None, water_bottle)
 Resting = Room("Resting room", "You are at a resting room. There are a lot of couches here.", "Quiet", None, None,
                "Diner", None, None, None)
-Quiet = Room("Quiet room", "You are now in the quiet room. There are 3 rooms.", "Bed", "Resting,", None, None, None,
+Quiet = Room("Quiet room", "You are now in the quiet room. There are 3 rooms.", "Bed", "Resting", None, None, None,
              None, None)
-Bed = Room("Bedroom", "You are in a bedroom. There seems to be a pair of gloves next to a bed.", "Computer", None, None,
-           "Office", None, None, "gloves")
-Computer = Room("Computer room", "You are in a computer room. All computers seems to be open but not turned on and "
+Bed = Room("Bedroom", "You are in a bedroom. There seems to be a pair of gloves next to a bed.", "Computer", "Quiet",
+           None,"Office", None, None, gloves)
+Computer = Room("Computer room", "You are in a computer room. All computers seems to be open but turned off and "
                                  "there's a potion next to a computer.", None,
-                "Bed", None, None, None, None, "health")
+                "Bed", None, None, None, None, health)
 Office = Room("Office", "You are in a office. There seems to be a note in one of the tables.", None, None, "Bed",
-              "Hall_of_Portraits_of_art", None, None, "note")
+              "Hall_of_Portraits_of_art", None, None, note)
 Hall_of_Portraits_of_art = Room("Hall of Portraits of art", "You are at the hall of portraits of art.", "Work", None,
                                 "Office", "Living", None, None, None)
 Work = Room("Workroom", "You are at the workroom. There are 2 rooms.", None, "Hall_of_Portraits_of_art", "Lab",
             "Studio", None, None, None)
 Lab = Room("Lab", "You are in the lab. There is a potion on a shelf.", None, "Work", None, "Studio", None, None,
-           "poison")
+           poison)
 Studio = Room("Studio", "You are in a studio.", None, "Work", "Lab", None, None, None, None)
 Living = Room("Living room", "You are at the living room. There are 2 rooms.", None, "Mini_Library",
-              "Hall_of_Portraits_of_art", "Box", None, None, "gold_bar")
+              "Hall_of_Portraits_of_art", "Box", None, None, gold_bar)
 Mini_Library = Room("Mini Library", "You are in Mini library. There seems to be a book on the the ground.", "Living",
-                    "Secret", None, None, None, None, "green_book")
+                    "Secret", None, None, None, None, green_book)
 Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
                              "There seems to be a lantern by the door it will help you see in the dark.",
-              "Mini_Library", "Camera", "Closet", None, None, None, "lantern")
+              "Mini_Library", "Camera", "Closet", None, None, None, lantern)
 Camera = Room("Camera room", "You are in a camera room. The camera's seems to show every room."
                              "There is also an axe in a corner", "Secret",
-              None, None, None, None, None, "axe")
-Closet = Room("Closet", "You are in a closet.",  None, None, None, "Secret", None, None, "gold")
-Box = Room("Box room", "You are in a room of boxes.", None, None, "Living", None, "Kitchen", None, "chest")
+              None, None, None, None, None, axe)
+Closet = Room("Closet", "You are in a closet.",  None, None, None, "Secret", None, None, gold)
+Box = Room("Box room", "You are in a room of boxes.", None, None, "Living", None, "Kitchen", None, chest)
 
 current_node = Main
 directions = ['north', 'south', 'east', 'west', 'southeast', 'westnorth']
