@@ -95,9 +95,8 @@ class WaterBottle(Item):
 
 
 class GreenBook(Item):
-    def __init__(self, name, drop, attack, defend, equip, description, book):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(GreenBook, self).__init__(name, drop, attack, defend, equip, description)
-        self.open = book
 
     def read(self):
         print("The key was made by an old pirate many years ago. The purpose of the key is to open a chest. "
@@ -193,40 +192,40 @@ class Room (object):
         current_node = globals()[getattr(self, direction)]
 
 # Items
-gold_bar = Item("Gold bar", "The item has been dropped", "It did nothing", "This item cannot defend you",
-                "You took out the gold bar", "This item tells that you're getting close.")
-chest = Item("Chest", "The chest has been dropped", "It is too heavy.", "It's too heavy to use this as a defense",
-             "You took the chest out", "The chest can only be open by a gold key.")
+gold_bar = GoldBar("Gold bar", "The item has been dropped", "It did nothing", "This item cannot defend you",
+                   "You took out the gold bar", "This item tells that you're getting close.")
+chest = Chest("Chest", "The chest has been dropped", "It is too heavy.", "It's too heavy to use this as a defense",
+              "You took the chest out", "The chest can only be open by a gold key.")
 letter = Letter("Letter", "The letter has been dropped", "The letter is not a weapon", "It cannot defend you.",
                 "You took out the letter", "The letter seems to say something.", "Read the letter")
 note = Note("Note", "The note has been dropped", "It did nothing", "It did nothing", "You took out the note.",
             "The note seems to tell were the last key could be.", "There are clues on this note")
-gloves = Item("Gloves", "The gloves has been dropped", "It did nothing", "It did nothing", "You wear the gloves.",
-              "These gloves can handle such things like a poison potion."
-              "If it takes to many damage, it can disappear.")
+gloves = Gloves("Gloves", "The gloves has been dropped", "It did nothing", "It did nothing", "You wear the gloves.",
+                "These gloves can handle such things like a poison potion."
+                "If it takes to many damage, it can disappear.")
 lantern = Lantern("Lantern", "The lantern has been dropped", "You can't use a lantern to attack",
                   "A lantern cannot defend you", "The lantern has been equipped",
                   "The lantern can be turn on and it can help you see in the dark.", "The glow is yellow")
-green_book = Item("Green book", "The book has been dropped", "It did nothing", "It did nothing",
-                  "You took out the book", "The book seems to tell the backstory of the golden key. "
-                                           "You are only to be able to read half of it.")
-water_bottle = Item("Water bottle", "The Item has been dropped", "It did nothing", "It did nothing",
-                    "You took out the bottle", "This is not any ordinary water, "
-                                               "if you drink it you are able to hold a potion.")
-hamburger = Item("Hamburger", "The item has been dropped", "It did nothing", "It did nothing",
-                 "You took out the hamburger", "When eaten, it can restore half of your health.")
-axe = Item("Axe", "The axe has been dropped", "You swing the axe", "It protected you", "You took out the axe",
-           "The axe can only be use to attack and defend. If it takes to many damage, it can disappear")
-potion = Item("Potion", "The potion has been dropped", "It did nothing", "It did nothing", "You took the potion out",
-              "There are two types of potions, health, and poison.")
+green_book = GreenBook("Green book", "The book has been dropped", "It did nothing", "It did nothing",
+                       "You took out the book", "The book seems to tell the back story of the golden key. "
+                       "You are only to be able to read half of it.")
+water_bottle = WaterBottle("Water bottle", "The Item has been dropped", "It did nothing", "It did nothing",
+                           "You took out the bottle", "This is not any ordinary water, "
+                           "if you drink it you are able to hold a potion.")
+hamburger = Hamburger("Hamburger", "The item has been dropped", "It did nothing", "It did nothing",
+                      "You took out the hamburger", "When eaten, it can restore half of your health.")
+axe = Axe("Axe", "The axe has been dropped", "You swing the axe", "It protected you", "You took out the axe",
+          "The axe can only be use to attack and defend. If it takes to many damage, it can disappear")
+potion = Potion("Potion", "The potion has been dropped", "It did nothing", "It did nothing", "You took the potion out",
+                "There are two types of potions, health, and poison.", "Certain potions are drinkable")
 health = Potion("Health potion", "The potion has been dropped", "It did nothing", "It did nothing",
                 "You took the potion out", "This potion brings back full health. Use it wisely.",
                 "You are able to drink it.")
 poison = Potion("Poison potion", "The potion has been dropped", "It did nothing", "It did nothing",
                 "You took the potion out", "You will need gloves in order to grab this potion.",
                 "You are not able to drink it.")
-key = Item("Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the key out",
-           "There are two types of keys, Jade, and Gold.")
+key = Key("Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the key out",
+          "There are two types of keys, Jade, and Gold.", "Each key opens certain door")
 jade = Key("Jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
            "This key can only open a door with a jade lock hole", "Find a jade lock hole")
 gold = Key("Golden Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the golden key out",
@@ -251,8 +250,8 @@ Resting = Room("Resting room", "You are at a resting room. There are a lot of co
                "Diner", None, None, None)
 Quiet = Room("Quiet room", "You are now in the quiet room. There are 3 rooms.", "Bed", "Resting", None, None, None,
              None, None)
-Bed = Room("Bedroom", "You are in a bedroom. There seems to be a pair of gloves next to a bed.", "Computer", "Quiet",
-           None,"Office", None, None, gloves)
+Bed = Room("Bedroom", "You are in a bedroom. There seems to be a pair of gloves next to a bed.", "Computer",
+           "Quiet", None, "Office", None, None, gloves)
 Computer = Room("Computer room", "You are in a computer room. All computers seems to be open but turned off and "
                                  "there's a potion next to a computer.", None,
                 "Bed", None, None, None, None, health)
@@ -290,13 +289,19 @@ while True:
         quit(0)
     elif command in short_directions:
         pos = short_directions.index(command)
-        com = directions[pos]
+        command = directions[pos]
     if command in directions:
         try:
             current_node.move(command)
         except KeyError:
             print("You cannot go this way")
-
+    elif "take" in command:
+        item_requested = command[5:]
+        if current_node.item.name.lower() == item_requested.lower():
+            character.pick_up_item(current_node.item)
+    elif "drop" in command:
+        item_requested = command[5:]
+        if current_node.item.name.lower() == item_requested.lower():
+            character.drop(current_node.item)
     else:
         print("Command not recognized")
-
