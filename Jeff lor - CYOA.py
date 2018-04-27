@@ -138,7 +138,7 @@ class Chest(Item):
 
     def opens(self):
         print("You've found the chest. The chest will give you these two wishes, "
-              "you can only choose one.  Restart Game   OR   Obtain all Items")
+              "you can only choose one.  Restart Game   OR   Obtain all Items  OR  None")
 
 
 class Letter(Item):
@@ -226,13 +226,13 @@ poison = Potion("Poison potion", "The potion has been dropped", "It did nothing"
                 "You are not able to drink it.")
 key = Key("Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the key out",
           "There are two types of keys, Jade, and Gold.", "Each key opens certain door")
-jade = Key("Jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
+jade = Key("jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
            "This key can only open a door with a jade lock hole", "Find a jade lock hole")
 gold = Key("Golden Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the golden key out",
            "This key can open a chest, not doors.", "Find a chest and use this key to open it.")
 
 # Characters
-character = Character("%", 100, "Your job is to explore an old house and find the secret of the "
+character = Character("%s", 100, "Your job is to explore an old house and find the secret of the "
                                 "chest that was made by a  pirate.", "You have died", [])
 
 # Rooms
@@ -244,7 +244,7 @@ Garage = Room("Garage", "You are at a garage. There seems to be a key inside a t
               None, None, None, jade)
 Kitchen = Room("Kitchen", "You are at the kitchen. There is nothing here.", None, "Garage", "Diner", None, None, "Box",
                hamburger)
-Diner = Room("Diner room", "You are at the diner room. There is a bottle of water on the table.", None, None, "Resting",
+Diner = Room("Diner room", "You are at the diner room. There is a water bottle on the table.", None, None, "Resting",
              "Kitchen", None, None, water_bottle)
 Resting = Room("Resting room", "You are at a resting room. There are a lot of couches here.", "Quiet", None, None,
                "Diner", None, None, None)
@@ -253,7 +253,7 @@ Quiet = Room("Quiet room", "You are now in the quiet room. There are 3 rooms.", 
 Bed = Room("Bedroom", "You are in a bedroom. There seems to be a pair of gloves next to a bed.", "Computer",
            "Quiet", None, "Office", None, None, gloves)
 Computer = Room("Computer room", "You are in a computer room. All computers seems to be open but turned off and "
-                                 "there's a potion next to a computer.", None,
+                                 "there's a health potion next to a computer.", None,
                 "Bed", None, None, None, None, health)
 Office = Room("Office", "You are in a office. There seems to be a note in one of the tables.", None, None, "Bed",
               "Hall_of_Portraits_of_art", None, None, note)
@@ -261,13 +261,13 @@ Hall_of_Portraits_of_art = Room("Hall of Portraits of art", "You are at the hall
                                 "Office", "Living", None, None, None)
 Work = Room("Workroom", "You are at the workroom. There are 2 rooms.", None, "Hall_of_Portraits_of_art", "Lab",
             "Studio", None, None, None)
-Lab = Room("Lab", "You are in the lab. There is a potion on a shelf.", None, "Work", None, "Studio", None, None,
+Lab = Room("Lab", "You are in the lab. There is a poison potion on a shelf.", None, "Work", None, "Studio", None, None,
            poison)
 Studio = Room("Studio", "You are in a studio.", None, "Work", "Lab", None, None, None, None)
 Living = Room("Living room", "You are at the living room. There are 2 rooms.", None, "Mini_Library",
               "Hall_of_Portraits_of_art", "Box", None, None, gold_bar)
-Mini_Library = Room("Mini Library", "You are in Mini library. There seems to be a book on the the ground.", "Living",
-                    "Secret", None, None, None, None, green_book)
+Mini_Library = Room("Mini Library", "You are in Mini library. There seems to be a green book on the the ground.",
+                    "Living","Secret", None, None, None, None, green_book)
 Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
                              "There seems to be a lantern by the door it will help you see in the dark.",
               "Mini_Library", "Camera", "Closet", None, None, None, lantern)
@@ -299,9 +299,5 @@ while True:
         item_requested = command[5:]
         if current_node.item.name.lower() == item_requested.lower():
             character.pick_up_item(current_node.item)
-    elif "drop" in command:
-        item_requested = command[5:]
-        if current_node.item.name.lower() == item_requested.lower():
-            character.drop(current_node.item)
     else:
         print("Command not recognized")
