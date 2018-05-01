@@ -146,7 +146,7 @@ class Letter(Item):
         super(Letter, self).__init__(name, drop, attack, defend, equip, description)
         self.read = read
 
-    def read_note(self):
+    def read_letter(self):
         print("Welcome")
 
 
@@ -233,14 +233,14 @@ gold = Key("Golden Key", "The key has been dropped", "It did nothing", "It did n
 
 # Characters
 character = Character("%s", 100, "Your job is to explore an old house and find the secret of the "
-                                "chest that was made by a  pirate.", "You have died", [])
+                                 "chest that was made by a pirate.", "You have died", [])
 
 # Rooms
 Main = Room("The main room", "You are at the main room. There are 4 rooms.", "Empty", None, None, None, None, None,
             None)
 Empty = Room("Empty room", "You are at an empty room. There is a letter in the middle of the room.", None, "Main", None,
              "Garage", None, None, letter)
-Garage = Room("Garage", "You are at a garage. There seems to be a key inside a toolbox.", "Kitchen", None, "Empty",
+Garage = Room("Garage", "You are at a garage. There seems to be a jade key inside a toolbox.", "Kitchen", None, "Empty",
               None, None, None, jade)
 Kitchen = Room("Kitchen", "You are at the kitchen. There is nothing here.", None, "Garage", "Diner", None, None, "Box",
                hamburger)
@@ -267,7 +267,7 @@ Studio = Room("Studio", "You are in a studio.", None, "Work", "Lab", None, None,
 Living = Room("Living room", "You are at the living room. There are 2 rooms.", None, "Mini_Library",
               "Hall_of_Portraits_of_art", "Box", None, None, gold_bar)
 Mini_Library = Room("Mini Library", "You are in Mini library. There seems to be a green book on the the ground.",
-                    "Living","Secret", None, None, None, None, green_book)
+                    "Living", "Secret", None, None, None, None, green_book)
 Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
                              "There seems to be a lantern by the door it will help you see in the dark.",
               "Mini_Library", "Camera", "Closet", None, None, None, lantern)
@@ -297,7 +297,10 @@ while True:
             print("You cannot go this way")
     elif "take" in command:
         item_requested = command[5:]
-        if current_node.item.name.lower() == item_requested.lower():
+        if current_node.item is not None and current_node.item.name.lower() == item_requested.lower():
             character.pick_up_item(current_node.item)
+            current_node.item = None
+    elif "read" in command:
+
     else:
         print("Command not recognized")
