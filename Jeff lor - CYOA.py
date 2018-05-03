@@ -137,8 +137,8 @@ class Chest(Item):
         print("The chest opens.")
 
     def opens(self):
-        print("You've found the chest. The chest will give you these two wishes, "
-              "you can only choose one.  Restart Game   OR   Obtain all Items  OR  None")
+        print("You've found the chest. You have completed the game. The chest will give you these two wishes, "
+              "you can only choose one.  Restart Game   OR   Obtain All Items  OR  None")
 
 
 class Letter(Item):
@@ -193,7 +193,7 @@ class Room (object):
 
 # Items
 gold_bar = GoldBar("Gold bar", "The item has been dropped", "It did nothing", "This item cannot defend you",
-                   "You took out the gold bar", "This item tells that you're getting close.")
+                   "You took out the gold bar", "This item will lead you to the chest, but not always.")
 chest = Chest("Chest", "The chest has been dropped", "It is too heavy.", "It's too heavy to use this as a defense",
               "You took the chest out", "The chest can only be open by a gold key.")
 letter = Letter("Letter", "The letter has been dropped", "The letter is not a weapon", "It cannot defend you.",
@@ -208,10 +208,10 @@ lantern = Lantern("Lantern", "The lantern has been dropped", "You can't use a la
                   "The lantern can be turn on and it can help you see in the dark.", "The glow is yellow")
 green_book = GreenBook("Green book", "The book has been dropped", "It did nothing", "It did nothing",
                        "You took out the book", "The book seems to tell the back story of the golden key. "
-                       "You are only to be able to read half of it.")
+                       "You are only able to read half of it.")
 water_bottle = WaterBottle("Water bottle", "The Item has been dropped", "It did nothing", "It did nothing",
                            "You took out the bottle", "This is not any ordinary water, "
-                           "if you drink it you are able to hold a potion.")
+                           "if you drink it you are able to hold a potion that is not holdable.")
 hamburger = Hamburger("Hamburger", "The item has been dropped", "It did nothing", "It did nothing",
                       "You took out the hamburger", "When eaten, it can restore half of your health.")
 axe = Axe("Axe", "The axe has been dropped", "You swing the axe", "It protected you", "You took out the axe",
@@ -261,20 +261,23 @@ Hall_of_Portraits_of_art = Room("Hall of Portraits of art", "You are at the hall
                                 "Office", "Living", None, None, None)
 Work = Room("Workroom", "You are at the workroom. There are 2 rooms.", None, "Hall_of_Portraits_of_art", "Lab",
             "Studio", None, None, None)
-Lab = Room("Lab", "You are in the lab. There is a poison potion on a shelf.", None, "Work", None, "Studio", None, None,
+Lab = Room("Lab", "You are in the lab. There is a poison potion on a shelf.", None, None, None, "Work", None, None,
            poison)
-Studio = Room("Studio", "You are in a studio.", None, "Work", "Lab", None, None, None, None)
-Living = Room("Living room", "You are at the living room. There are 2 rooms.", None, "Mini_Library",
-              "Hall_of_Portraits_of_art", "Box", None, None, gold_bar)
+Studio = Room("Studio", "You are in a studio. A gold bar seems to be shining at the corner of the room.",
+              None, None, "Work", None, None, None, gold_bar)
+Living = Room("Living room", "You are at the living room. There are 2 rooms. "
+                             "One of these rooms has a strange green lock hole", None, "Mini_Library",
+                             "Hall_of_Portraits_of_art", "Box", None, None)
 Mini_Library = Room("Mini Library", "You are in Mini library. There seems to be a green book on the the ground.",
                     "Living", "Secret", None, None, None, None, green_book)
 Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
-                             "There seems to be a lantern by the door it will help you see in the dark.",
-              "Mini_Library", "Camera", "Closet", None, None, None, lantern)
+                             "There seems to be a lantern by the door it will help you see in the dark. "
+                             "The closet is locked and needs a key.", "Mini_Library", "Camera", "Closet", None, None,
+                             None, lantern)
 Camera = Room("Camera room", "You are in a camera room. The camera's seems to show every room."
-                             "There is also an axe in a corner", "Secret",
-              None, None, None, None, None, axe)
-Closet = Room("Closet", "You are in a closet.",  None, None, None, "Secret", None, None, gold)
+                             "There is also an axe in a corner", "Secret", None, None, None, None, None, axe)
+Closet = Room("Closet", "You are in a closet. There is a golden key on top of the shelf.",
+              None, None, None, "Secret", None, None, gold)
 Box = Room("Box room", "You are in a room of boxes.", None, None, "Living", None, "Kitchen", None, chest)
 
 current_node = Main

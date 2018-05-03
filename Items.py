@@ -1,5 +1,6 @@
 class Item(object):
-    def __init__(self, drop, attack, defend, equip, description):
+    def __init__(self, name, drop, attack, defend, equip, description):
+        self.name = name
         self.drop = drop
         self.attack = attack
         self.defend = defend
@@ -11,27 +12,25 @@ class Item(object):
 
 
 class Key(Item):
-    def __init__(self, drop, attack, defend, equip, description, doors):
-        super(Item, self).__init__(drop, attack, defend, equip, description)
+    def __init__(self, name, drop, attack, defend, equip, description, doors):
+        super(Key, self).__init__(name, drop, attack, defend, equip, description)
         self.open = doors
 
-    def attack(self):
-        print("It did nothing.")
-
-    def defend(self):
-        print("It did nothing.")
+    def throw(self):
+        print("It did nothing")
 
 
 class Jade(Key):
-    def __init__(self, drop, attack, defend, equip, description, doors):
-        super(Key, self).__init__(drop, equip, description, doors)
+    def __init__(self, name, drop, attack, defend, equip, description, doors):
+        super(Jade, self).__init__(name, drop, attack, defend, equip, description, doors)
 
     def open_jade_door(self):
         print("The jade door is open.")
 
+
 class Gold(Key):
-    def __init__(self, drop, attack, defend, equip, description, doors):
-        super(Key, self).__init__(drop, equip, description, doors)
+    def __init__(self, name, drop, attack, defend, equip, description, doors):
+        super(Gold, self).__init__(name, drop, attack, defend, equip, description, doors)
 
     def open_chest(self):
         print("The chest is open.")
@@ -41,8 +40,8 @@ class Gold(Key):
 
 
 class Potion(Item):
-    def __init__(self, drop, equip, description, drink):
-        super(Item, self).__init__(drop, equip, description)
+    def __init__(self, name, drop, attack, defend, equip, description, drink):
+        super(Potion, self).__init__(name, drop, attack, defend, equip, description)
         self.drink = drink
 
     def throw(self):
@@ -50,18 +49,18 @@ class Potion(Item):
 
 
 class Health(Potion):
-    def __init__(self, drop, equip ,description):
-        super(Potion, self).__init__(drop, equip, description)
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(Potion, self).__init__(name, drop, attack, defend, equip, description)
 
     def drink(self):
         print("It restored your health.")
 
 
 class Poison(Potion):
-    def __init__(self, drop, equip, description):
-        super(Potion, self).__init__(drop, equip, description)
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(Potion, self).__init__(name, drop, attack, defend, equip, description)
 
-    def Drink(self):
+    def drink(self):
         print("You can not drink a poison potion.")
 
     def touched(self):
@@ -69,44 +68,44 @@ class Poison(Potion):
 
 
 class Axe(Item):
-    def __init__(self, drop, attack, defend, equip, description, chop):
-        super(Item, self).__init__(drop, attack, defend, equip, description)
-        self.chop = chop
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(Axe, self).__init__(name, drop, attack, defend, equip, description)
 
     def chop_doors(self):
         print("The door has been chop down into wood.")
 
 
 class Hamburger(Item):
-    def __init__(self, drop, equip, description, eat):
-        super(Item, self).__init__(drop, equip, description)
-        self.eat = eat
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(Hamburger, self).__init__(name, drop, attack, defend, equip, description)
 
     def eat(self):
         print("You ate the hamburger. It restored half of your health.")
 
 
-class Water_Bottle(Item):
-    def __init__(self, drop, equip, description, drink):
-        super(Item, self).__init__(drop, equip, description)
-        self.drink = drink
+class WaterBottle(Item):
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(WaterBottle, self).__init__(name, drop, attack, defend, equip, description)
 
     def pour_water(self):
         print("You poured the water.")
 
+    def drink(self):
+        print("You drinked the water")
 
-class Green_Book(Item):
-    def __init__(self, drop, equip, description, book):
-        super(Item, self).__init__(drop, equip, description)
-        self.open = book
+
+class GreenBook(Item):
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(GreenBook, self).__init__(name, drop, attack, defend, equip, description)
 
     def read(self):
-        print("You readed the book. It tells were the golden key could be.")
+        print("The key was made by an old pirate many years ago. The purpose of the key is to open a chest. "
+              "Inside of the chest is a mystery.")
 
 
-class lantern(Item):
-    def __init__(self, drop, equip, description, glow):
-        super(Item, self).__init__(drop, equip, description)
+class Lantern(Item):
+    def __init__(self, name, drop, attack, defend, equip, description, glow):
+        super(Lantern, self).__init__(name, drop, attack, defend, equip, description)
         self.glow = glow
 
     def turn_on(self):
@@ -114,17 +113,16 @@ class lantern(Item):
 
 
 class Gloves(Item):
-    def __init__(self, drop, equip, description, grab):
-        super(Item, self).__init__(drop, equip, description)
-        self.grab = grab
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(Gloves, self).__init__(name, drop, attack, defend, equip, description)
 
     def protect_hands(self):
         print("Your hands are now protected from things that can harm your hands.")
 
 
 class Note(Item):
-    def __init__(self, drop, description, clue):
-        super(Item, self).__init__(drop, description)
+    def __init__(self, name, drop, attack, defend, equip, description, clue):
+        super(Note, self).__init__(name, drop, attack, defend, equip, description)
         self.note = clue
 
     def read_note(self):
@@ -132,29 +130,29 @@ class Note(Item):
 
 
 class Chest(Item):
-    def __init__(self, drop, description, note):
-        super(Item, self).__init__(drop, description)
-        self.note = note
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(Chest, self).__init__(name, drop, attack, defend, equip, description)
 
     def use_key(self):
         print("The chest opens.")
 
     def opens(self):
-        print("There is a letter and a gold bar.")
+        print("You've found the chest. The chest will give you these two wishes, "
+              "you can only choose one.  Restart Game   OR   Obtain all Items  OR  None")
 
 
-class letter(Item):
-    def __init__(self, drop, description, read):
-        super(Item, self).__init__(drop, description)
+class Letter(Item):
+    def __init__(self, name, drop, attack, defend, equip, description, read):
+        super(Letter, self).__init__(name, drop, attack, defend, equip, description)
         self.read = read
 
-    def read_note(self):
-        print("Congratulations on finding the chest.")
+    def read_letter(self):
+        print("Welcome")
 
 
-class Gold_bar(Item):
-    def __init__(self, drop, description):
-        super(Item, self).__init__(drop, description)
+class GoldBar(Item):
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(GoldBar, self).__init__(name, drop, attack, defend, equip, description)
 
     def use(self):
         print("It does nothing.")
