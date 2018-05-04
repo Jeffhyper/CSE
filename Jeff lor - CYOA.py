@@ -266,8 +266,8 @@ Lab = Room("Lab", "You are in the lab. There is a poison potion on a shelf.", No
 Studio = Room("Studio", "You are in a studio. A gold bar seems to be shining at the corner of the room.",
               None, None, "Work", None, None, None, gold_bar)
 Living = Room("Living room", "You are at the living room. There are 2 rooms. "
-                             "One of these rooms has a strange green lock hole", None, "Mini_Library",
-                             "Hall_of_Portraits_of_art", "Box", None, None)
+                             "The room on the left has a strange green lock hole", None, "Mini_Library",
+                             "Hall_of_Portraits_of_art", "Box", None, None, None)
 Mini_Library = Room("Mini Library", "You are in Mini library. There seems to be a green book on the the ground.",
                     "Living", "Secret", None, None, None, None, green_book)
 Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
@@ -276,8 +276,8 @@ Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
                              None, lantern)
 Camera = Room("Camera room", "You are in a camera room. The camera's seems to show every room."
                              "There is also an axe in a corner", "Secret", None, None, None, None, None, axe)
-Closet = Room("Closet", "You are in a closet. There is a golden key on top of the shelf.",
-              None, None, None, "Secret", None, None, gold)
+Closet = Room("Closet", "You are in a closet. There is a golden key on top of the shelf.",None, None, None, "Secret",
+              None, None, gold)
 Box = Room("Box room", "You are in a room of boxes.", None, None, "Living", None, "Kitchen", None, chest)
 
 current_node = Main
@@ -304,6 +304,6 @@ while True:
             character.pick_up_item(current_node.item)
             current_node.item = None
     elif "read" in command:
-
+        
     else:
         print("Command not recognized")
