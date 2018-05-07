@@ -276,7 +276,7 @@ Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
                              None, lantern)
 Camera = Room("Camera room", "You are in a camera room. The camera's seems to show every room."
                              "There is also an axe in a corner", "Secret", None, None, None, None, None, axe)
-Closet = Room("Closet", "You are in a closet. There is a golden key on top of the shelf.",None, None, None, "Secret",
+Closet = Room("Closet", "You are in a closet. There is a golden key on top of the shelf.", None, None, None, "Secret",
               None, None, gold)
 Box = Room("Box room", "You are in a room of boxes.", None, None, "Living", None, "Kitchen", None, chest)
 
@@ -303,7 +303,6 @@ while True:
         if current_node.item is not None and current_node.item.name.lower() == item_requested.lower():
             character.pick_up_item(current_node.item)
             current_node.item = None
-    elif "read" in command:
-        
+
     else:
         print("Command not recognized")
