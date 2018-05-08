@@ -25,7 +25,9 @@ class Jade(Key):
         super(Jade, self).__init__(name, drop, attack, defend, equip, description, doors)
 
     def open_jade_door(self):
-        print("The jade door is open.")
+        Secret.east = 'closet'
+        Kitchen.westnorth = 'Box'
+        Living.west = 'Box'
 
 
 class Gold(Key):
@@ -226,8 +228,8 @@ poison = Potion("Poison potion", "The potion has been dropped", "It did nothing"
                 "You are not able to drink it.")
 key = Key("Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the key out",
           "There are two types of keys, Jade, and Gold.", "Each key opens certain door")
-jade = Key("jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
-           "This key can only open a door with a jade lock hole", "Find a jade lock hole")
+jade = Jade("jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
+            "This key can only open a door with a jade lock hole")
 gold = Key("Golden Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the golden key out",
            "This key can open a chest, not doors.", "Find a chest and use this key to open it.")
 
@@ -284,6 +286,8 @@ current_node = Main
 directions = ['north', 'south', 'east', 'west', 'southeast', 'westnorth']
 short_directions = ['n', 's', 'e', 'w', 'se', 'wn']
 
+character.inventory[jade]
+
 while True:
     print(current_node.name)
     print(current_node.description)
@@ -303,6 +307,12 @@ while True:
         if current_node.item is not None and current_node.item.name.lower() == item_requested.lower():
             character.pick_up_item(current_node.item)
             current_node.item = None
+    elif 'use' in command:
+        item_requested = command[4:]
+        for item in character.inventory:
+            if item.name.lower() == item_requested.lower():
+                if isinstance(item, Jade):
+                    item.open_jade_door()
 
     else:
         print("Command not recognized")
