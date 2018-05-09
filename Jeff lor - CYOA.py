@@ -12,17 +12,16 @@ class Item(object):
 
 
 class Key(Item):
-    def __init__(self, name, drop, attack, defend, equip, description, doors):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(Key, self).__init__(name, drop, attack, defend, equip, description)
-        self.open = doors
 
     def throw(self):
         print("It did nothing")
 
 
 class Jade(Key):
-    def __init__(self, name, drop, attack, defend, equip, description, doors):
-        super(Jade, self).__init__(name, drop, attack, defend, equip, description, doors)
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(Jade, self).__init__(name, drop, attack, defend, equip, description)
 
     def open_jade_door(self):
         Secret.east = 'closet'
@@ -31,8 +30,8 @@ class Jade(Key):
 
 
 class Gold(Key):
-    def __init__(self, name, drop, attack, defend, equip, description, doors):
-        super(Gold, self).__init__(name, drop, attack, defend, equip, description, doors)
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(Gold, self).__init__(name, drop, attack, defend, equip, description)
 
     def open_chest(self):
         print("The chest is open.")
@@ -106,9 +105,8 @@ class GreenBook(Item):
 
 
 class Lantern(Item):
-    def __init__(self, name, drop, attack, defend, equip, description, glow):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(Lantern, self).__init__(name, drop, attack, defend, equip, description)
-        self.glow = glow
 
     def turn_on(self):
         print("The lantern turns on.")
@@ -123,9 +121,8 @@ class Gloves(Item):
 
 
 class Note(Item):
-    def __init__(self, name, drop, attack, defend, equip, description, clue):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(Note, self).__init__(name, drop, attack, defend, equip, description)
-        self.note = clue
 
     def read_note(self):
         print("Only one room has the key.") or print("A book that always fall off the shelf.")
@@ -144,9 +141,8 @@ class Chest(Item):
 
 
 class Letter(Item):
-    def __init__(self, name, drop, attack, defend, equip, description, read):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(Letter, self).__init__(name, drop, attack, defend, equip, description)
-        self.read = read
 
     def read_letter(self):
         print("Welcome")
@@ -199,15 +195,15 @@ gold_bar = GoldBar("Gold bar", "The item has been dropped", "It did nothing", "T
 chest = Chest("Chest", "The chest has been dropped", "It is too heavy.", "It's too heavy to use this as a defense",
               "You took the chest out", "The chest can only be open by a gold key.")
 letter = Letter("Letter", "The letter has been dropped", "The letter is not a weapon", "It cannot defend you.",
-                "You took out the letter", "The letter seems to say something.", "Read the letter")
+                "You took out the letter", "The letter seems to say something.")
 note = Note("Note", "The note has been dropped", "It did nothing", "It did nothing", "You took out the note.",
-            "The note seems to tell were the last key could be.", "There are clues on this note")
+            "The note seems to tell were the last key could be.")
 gloves = Gloves("Gloves", "The gloves has been dropped", "It did nothing", "It did nothing", "You wear the gloves.",
                 "These gloves can handle such things like a poison potion."
                 "If it takes to many damage, it can disappear.")
 lantern = Lantern("Lantern", "The lantern has been dropped", "You can't use a lantern to attack",
                   "A lantern cannot defend you", "The lantern has been equipped",
-                  "The lantern can be turn on and it can help you see in the dark.", "The glow is yellow")
+                  "The lantern can be turn on and it can help you see in the dark.")
 green_book = GreenBook("Green book", "The book has been dropped", "It did nothing", "It did nothing",
                        "You took out the book", "The book seems to tell the back story of the golden key. "
                        "You are only able to read half of it.")
@@ -227,11 +223,11 @@ poison = Potion("Poison potion", "The potion has been dropped", "It did nothing"
                 "You took the potion out", "You will need gloves in order to grab this potion.",
                 "You are not able to drink it.")
 key = Key("Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the key out",
-          "There are two types of keys, Jade, and Gold.", "Each key opens certain door")
+          "There are two types of keys, Jade, and Gold.")
 jade = Jade("jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
             "This key can only open a door with a jade lock hole")
 gold = Key("Golden Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the golden key out",
-           "This key can open a chest, not doors.", "Find a chest and use this key to open it.")
+           "This key can open a chest, not doors.")
 
 # Characters
 character = Character("%s", 100, "Your job is to explore an old house and find the secret of the "
@@ -286,8 +282,6 @@ current_node = Main
 directions = ['north', 'south', 'east', 'west', 'southeast', 'westnorth']
 short_directions = ['n', 's', 'e', 'w', 'se', 'wn']
 
-character.inventory[jade]
-
 while True:
     print(current_node.name)
     print(current_node.description)
@@ -313,6 +307,10 @@ while True:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Jade):
                     item.open_jade_door()
-
+    elif 'jump' in command:
+        print("You jumped")
+    elif 'drop' in command:
+        item_requested = command[5:]
+        for item in character.inventory:
     else:
         print("Command not recognized")
