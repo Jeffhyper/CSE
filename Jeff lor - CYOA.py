@@ -309,8 +309,8 @@ while True:
                     item.open_jade_door()
     elif 'jump' in command:
         print("You jumped")
-    elif 'drop' in command:
         item_requested = command[5:]
-        for item in character.inventory:
+    elif 'read' in command:
+
     else:
         print("Command not recognized")
