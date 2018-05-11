@@ -125,7 +125,7 @@ class Note(Item):
         super(Note, self).__init__(name, drop, attack, defend, equip, description)
 
     def read_note(self):
-        print("Only one room has the key.") or print("A book that always fall off the shelf.")
+        print("Only one room has the key.")
 
 
 class Chest(Item):
@@ -135,7 +135,7 @@ class Chest(Item):
     def use_key(self):
         print("The chest opens.")
 
-    def opens(self):
+    def open(self):
         print("You've found the chest. You have completed the game. The chest will give you these two wishes, "
               "you can only choose one.  Restart Game   OR   Obtain All Items  OR  None")
 
@@ -309,8 +309,15 @@ while True:
                     item.open_jade_door()
     elif 'jump' in command:
         print("You jumped")
-        item_requested = command[5:]
     elif 'read' in command:
-
+        item_requested = command[5:]
+        for item in character.inventory:
+            if item.name.lower() == item_requested.lower():
+                if isinstance(item, Letter):
+                    item.read_letter()
+                elif isinstance(item, Note):
+                    item.read_note()
+                elif isinstance(item, GreenBook):
+                    item.read()
     else:
         print("Command not recognized")
