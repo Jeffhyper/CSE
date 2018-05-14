@@ -81,7 +81,7 @@ class Hamburger(Item):
         super(Hamburger, self).__init__(name, drop, attack, defend, equip, description)
 
     def eat(self):
-        print("You ate the hamburger. It restored half of your health.")
+        print("You ate the hamburger.")
 
 
 class WaterBottle(Item):
@@ -116,9 +116,11 @@ class Gloves(Item):
     def __init__(self, name, drop, attack, defend, equip, description):
         super(Gloves, self).__init__(name, drop, attack, defend, equip, description)
 
-    def protect_hands(self):
-        print("Your hands are now protected from things that can harm your hands.")
+    def use(self):
+        print("You put on the gloves")
 
+    def off(self):
+        print("You took the gloves off")
 
 class Note(Item):
     def __init__(self, name, drop, attack, defend, equip, description):
@@ -136,8 +138,7 @@ class Chest(Item):
         print("The chest opens.")
 
     def open(self):
-        print("You've found the chest. You have completed the game. The chest will give you these two wishes, "
-              "you can only choose one.  Restart Game   OR   Obtain All Items  OR  None")
+        print("You've found the chest. You have two wishes, Obtain all Items  OR  ")
 
 
 class Letter(Item):
@@ -240,8 +241,8 @@ Empty = Room("Empty room", "You are at an empty room. There is a letter in the m
              "Garage", None, None, letter)
 Garage = Room("Garage", "You are at a garage. There seems to be a jade key inside a toolbox.", "Kitchen", None, "Empty",
               None, None, None, jade)
-Kitchen = Room("Kitchen", "You are at the kitchen. There is nothing here.", None, "Garage", "Diner", None, None, "Box",
-               hamburger)
+Kitchen = Room("Kitchen", "You are at the kitchen. There is a hamburger by the microwave.", None, "Garage", "Diner",
+               None, None, "Box",hamburger)
 Diner = Room("Diner room", "You are at the diner room. There is a water bottle on the table.", None, None, "Resting",
              "Kitchen", None, None, water_bottle)
 Resting = Room("Resting room", "You are at a resting room. There are a lot of couches here.", "Quiet", None, None,
@@ -307,6 +308,8 @@ while True:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Jade):
                     item.open_jade_door()
+                elif isinstance(item, Gloves):
+                    item.use()
     elif 'jump' in command:
         print("You jumped")
     elif 'read' in command:
@@ -319,5 +322,29 @@ while True:
                     item.read_note()
                 elif isinstance(item, GreenBook):
                     item.read()
+    elif 'open' in command:
+        item_requested = command[5:]
+        for item in character.inventory:
+            if item.name.lower() == item_requested.lower():
+                if isinstance(item, Chest):
+                    item.open()
+    elif 'off' in command:
+        item_requested = command[4:]
+        for item in character.inventory:
+            if item.name.lower() == item_requested.lower():
+                if isinstance(item, Gloves):
+                    item.off()
+    elif 'drink' in command:
+        item_requested = command[6:]
+        for item in character.inventory:
+            if item.name.lower() == item_requested.lower():
+                if isinstance(item, WaterBottle):
+                    item.drink()
+    elif 'eat' in command:
+        item_requested = command[5:]
+        for item in character.inventory:
+            if item.name.lower() == item_requested.lower():
+                if isinstance(item, Hamburger):
+                    item.eat()
     else:
         print("Command not recognized")
