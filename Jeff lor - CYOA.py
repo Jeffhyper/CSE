@@ -41,12 +41,11 @@ class Gold(Key):
 
 
 class Potion(Item):
-    def __init__(self, name, drop, attack, defend, equip, description, drink):
+    def __init__(self, name, drop, attack, defend, equip, description):
         super(Potion, self).__init__(name, drop, attack, defend, equip, description)
-        self.drink = drink
 
-    def throw(self):
-        print("It did nothing.")
+    def drink(self):
+        print("You drinked te potion")
 
 
 class Health(Potion):
@@ -64,16 +63,13 @@ class Poison(Potion):
     def drink(self):
         print("You can not drink a poison potion.")
 
-    def touched(self):
-        print("You need gloves in order to get this potion.")
-
 
 class Axe(Item):
     def __init__(self, name, drop, attack, defend, equip, description):
         super(Axe, self).__init__(name, drop, attack, defend, equip, description)
 
-    def chop_doors(self):
-        print("The door has been chop down into wood.")
+    def swing(self):
+        print("You swinged the axe.")
 
 
 class Hamburger(Item):
@@ -87,9 +83,6 @@ class Hamburger(Item):
 class WaterBottle(Item):
     def __init__(self, name, drop, attack, defend, equip, description):
         super(WaterBottle, self).__init__(name, drop, attack, defend, equip, description)
-
-    def pour_water(self):
-        print("You poured the water.")
 
     def drink(self):
         print("You drinked the water")
@@ -110,6 +103,9 @@ class Lantern(Item):
 
     def turn_on(self):
         print("The lantern turns on.")
+
+    def turn_off(self):
+        print("The lantern turns off")
 
 
 class Gloves(Item):
@@ -134,11 +130,9 @@ class Chest(Item):
     def __init__(self, name, drop, attack, defend, equip, description):
         super(Chest, self).__init__(name, drop, attack, defend, equip, description)
 
-    def use_key(self):
-        print("The chest opens.")
-
     def open(self):
-        print("You've found the chest. You have two wishes, Obtain all Items  OR  ")
+        print("You've found the chest. You have completed the game, do you want to obtained all the items, "
+              "if yes put Obtain all items, if no put None")
 
 
 class Letter(Item):
@@ -216,13 +210,11 @@ hamburger = Hamburger("Hamburger", "The item has been dropped", "It did nothing"
 axe = Axe("Axe", "The axe has been dropped", "You swing the axe", "It protected you", "You took out the axe",
           "The axe can only be use to attack and defend. If it takes to many damage, it can disappear")
 potion = Potion("Potion", "The potion has been dropped", "It did nothing", "It did nothing", "You took the potion out",
-                "There are two types of potions, health, and poison.", "Certain potions are drinkable")
+                "There are two types of potions, health, and poison.")
 health = Potion("Health potion", "The potion has been dropped", "It did nothing", "It did nothing",
-                "You took the potion out", "This potion brings back full health. Use it wisely.",
-                "You are able to drink it.")
+                "You took the potion out", "This potion brings back full health. Use it wisely.")
 poison = Potion("Poison potion", "The potion has been dropped", "It did nothing", "It did nothing",
-                "You took the potion out", "You will need gloves in order to grab this potion.",
-                "You are not able to drink it.")
+                "You took the potion out", "You will need gloves in order to grab this potion.")
 key = Key("Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the key out",
           "There are two types of keys, Jade, and Gold.")
 jade = Jade("jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
@@ -242,7 +234,7 @@ Empty = Room("Empty room", "You are at an empty room. There is a letter in the m
 Garage = Room("Garage", "You are at a garage. There seems to be a jade key inside a toolbox.", "Kitchen", None, "Empty",
               None, None, None, jade)
 Kitchen = Room("Kitchen", "You are at the kitchen. There is a hamburger by the microwave.", None, "Garage", "Diner",
-               None, None, "Box",hamburger)
+               None, None, "Box", hamburger)
 Diner = Room("Diner room", "You are at the diner room. There is a water bottle on the table.", None, None, "Resting",
              "Kitchen", None, None, water_bottle)
 Resting = Room("Resting room", "You are at a resting room. There are a lot of couches here.", "Quiet", None, None,
@@ -310,6 +302,8 @@ while True:
                     item.open_jade_door()
                 elif isinstance(item, Gloves):
                     item.use()
+                elif isinstance(item, GoldBar):
+                    item.use()
     elif 'jump' in command:
         print("You jumped")
     elif 'read' in command:
@@ -334,17 +328,41 @@ while True:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Gloves):
                     item.off()
+                elif isinstance(item, Lantern):
+                    item.turn_off()
     elif 'drink' in command:
         item_requested = command[6:]
         for item in character.inventory:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, WaterBottle):
                     item.drink()
+                elif isinstance(item, Health):
+                    item.drink()
+                elif isinstance(item, Poison):
+                    item.drink()
     elif 'eat' in command:
-        item_requested = command[5:]
+        item_requested = command[4:]
         for item in character.inventory:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Hamburger):
                     item.eat()
+    elif 'swing' in command:
+        item_requested = command[6:]
+        for item in character.inventory:
+            if item.name.lower() == item_requested.lower():
+                if isinstance(item, Axe):
+                    item.swing()
+    elif 'on' in command:
+        item_requested = command[3:]
+        for item in character.inventory:
+            if item.name.lower() == item_requested.lower():
+                if isinstance(item, Lantern):
+                    item.turn_on()
+    elif 'pour' in command:
+        item_requested = command[5:]
+        for item in character.inventory:
+            if item.name.lower() == item_requested.lower():
+                if isinstance(item, WaterBottle):
+                    item.pour_water()
     else:
         print("Command not recognized")
