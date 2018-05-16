@@ -25,19 +25,14 @@ class Jade(Key):
 
     def open_jade_door(self):
         Secret.east = 'closet'
-        Kitchen.westnorth = 'Box'
-        Living.west = 'Box'
-
 
 class Gold(Key):
     def __init__(self, name, drop, attack, defend, equip, description):
         super(Gold, self).__init__(name, drop, attack, defend, equip, description)
 
-    def open_chest(self):
-        print("The chest is open.")
-
     def open_doors(self):
-        print("The door is already open")
+        Kitchen.westnorth = 'Box'
+        Living.west = 'Box'
 
 
 class Potion(Item):
@@ -61,7 +56,7 @@ class Poison(Potion):
         super(Potion, self).__init__(name, drop, attack, defend, equip, description)
 
     def drink(self):
-        print("You can not drink a poison potion.")
+        print("Your body starts to feel weird.")
 
 
 class Axe(Item):
@@ -71,6 +66,8 @@ class Axe(Item):
     def swing(self):
         print("You swinged the axe.")
 
+    def throw(self):
+        print("It is too heavy to throw it.")
 
 class Hamburger(Item):
     def __init__(self, name, drop, attack, defend, equip, description):
@@ -211,15 +208,15 @@ axe = Axe("Axe", "The axe has been dropped", "You swing the axe", "It protected 
           "The axe can only be use to attack and defend. If it takes to many damage, it can disappear")
 potion = Potion("Potion", "The potion has been dropped", "It did nothing", "It did nothing", "You took the potion out",
                 "There are two types of potions, health, and poison.")
-health = Potion("Health potion", "The potion has been dropped", "It did nothing", "It did nothing",
+health = Health("Health potion", "The potion has been dropped", "It did nothing", "It did nothing",
                 "You took the potion out", "This potion brings back full health. Use it wisely.")
-poison = Potion("Poison potion", "The potion has been dropped", "It did nothing", "It did nothing",
+poison = Poison("Poison potion", "The potion has been dropped", "It did nothing", "It did nothing",
                 "You took the potion out", "You will need gloves in order to grab this potion.")
 key = Key("Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the key out",
           "There are two types of keys, Jade, and Gold.")
 jade = Jade("jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
             "This key can only open a door with a jade lock hole")
-gold = Key("Golden Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the golden key out",
+gold = Gold("Golden Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the golden key out",
            "This key can open a chest, not doors.")
 
 # Characters
@@ -256,8 +253,7 @@ Lab = Room("Lab", "You are in the lab. There is a poison potion on a shelf.", No
            poison)
 Studio = Room("Studio", "You are in a studio. A gold bar seems to be shining at the corner of the room.",
               None, None, "Work", None, None, None, gold_bar)
-Living = Room("Living room", "You are at the living room. There are 2 rooms. "
-                             "The room on the left has a strange green lock hole", None, "Mini_Library",
+Living = Room("Living room", "You are at the living room. There are 2 rooms.", None, "Mini_Library",
                              "Hall_of_Portraits_of_art", "Box", None, None, None)
 Mini_Library = Room("Mini Library", "You are in Mini library. There seems to be a green book on the the ground.",
                     "Living", "Secret", None, None, None, None, green_book)
@@ -269,7 +265,10 @@ Camera = Room("Camera room", "You are in a camera room. The camera's seems to sh
                              "There is also an axe in a corner", "Secret", None, None, None, None, None, axe)
 Closet = Room("Closet", "You are in a closet. There is a golden key on top of the shelf.", None, None, None, "Secret",
               None, None, gold)
-Box = Room("Box room", "You are in a room of boxes.", None, None, "Living", None, "Kitchen", None, chest)
+Box = Room("Box room", "You are in a room of boxes. All boxes start to disappear, "
+                       "a chest spawns in the middle of the room, a pirate appears out of nowhere. "
+                       "You'll need to defeat it in order to get to the chest.", None, None, "Living", None,
+                       "Kitchen", None, chest)
 
 current_node = Main
 directions = ['north', 'south', 'east', 'west', 'southeast', 'westnorth']
@@ -332,14 +331,18 @@ while True:
                     item.turn_off()
     elif 'drink' in command:
         item_requested = command[6:]
+        found = False
         for item in character.inventory:
             if item.name.lower() == item_requested.lower():
+                found = True
                 if isinstance(item, WaterBottle):
                     item.drink()
                 elif isinstance(item, Health):
                     item.drink()
                 elif isinstance(item, Poison):
                     item.drink()
+        if not found:
+            print("You don't have that.")
     elif 'eat' in command:
         item_requested = command[4:]
         for item in character.inventory:
@@ -358,11 +361,16 @@ while True:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Lantern):
                     item.turn_on()
-    elif 'pour' in command:
-        item_requested = command[5:]
+    elif 'throw' in command:
+        item_requested = command[6:]
         for item in character.inventory:
             if item.name.lower() == item_requested.lower():
-                if isinstance(item, WaterBottle):
-                    item.pour_water()
+                if isinstance(item, Axe):
+                    item.throw()
+    elif 'attack' in command:
+        item_requested = command[7:]
+        for item in character.inventory:
+            if item.name.lower() == item_requested.lower():
+                if isinstance(item, Axe):
     else:
         print("Command not recognized")
