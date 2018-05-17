@@ -26,6 +26,7 @@ class Jade(Key):
     def open_jade_door(self):
         Secret.east = 'closet'
 
+
 class Gold(Key):
     def __init__(self, name, drop, attack, defend, equip, description):
         super(Gold, self).__init__(name, drop, attack, defend, equip, description)
@@ -68,6 +69,7 @@ class Axe(Item):
 
     def throw(self):
         print("It is too heavy to throw it.")
+
 
 class Hamburger(Item):
     def __init__(self, name, drop, attack, defend, equip, description):
@@ -114,6 +116,7 @@ class Gloves(Item):
 
     def off(self):
         print("You took the gloves off")
+
 
 class Note(Item):
     def __init__(self, name, drop, attack, defend, equip, description):
@@ -166,6 +169,12 @@ class Character(object):
     def take_damage(self, health):
         self.health -= health
         print("You have taken damage.")
+
+class Pirate(object):
+    def __init__(self, name, health, description):
+        self.name = name
+        self.health = health
+        self.description = description
 
 
 class Room (object):
@@ -228,6 +237,7 @@ gold = Gold("Golden Key", "The key has been dropped", "It did nothing", "It did 
 character = Character("%s", 100, "Your job is to explore an old house and find the secret of the "
                                  "chest that was made by a pirate.", "You have died", [])
 
+
 # Rooms
 Main = Room("The main room", "You are at the main room. There are 4 rooms.", "Empty", None, None, None, None, None,
             None, "There is nothing in this room")
@@ -246,11 +256,11 @@ Quiet = Room("Quiet room", "You are now in the quiet room. There are 3 rooms.", 
 Bed = Room("Bedroom", "You are in a bedroom.", "Computer", "Quiet", None, "Office", None, None, gloves,
            "There are two gloves by the bed")
 Computer = Room("Computer room", "You are in a computer room. All computers seems to be open but turned off",
-                None,"Bed", None, None, None, None, health, "There is a health potion by one of the computers.")
+                None, "Bed", None, None, None, None, health, "There is a health potion by one of the computers.")
 Office = Room("Office", "You are in a office.", None, None, "Bed",
               "Hall_of_Portraits_of_art", None, None, note, "There is a note by the table")
 Hall_of_Portraits_of_art = Room("Hall of Portraits of art", "You are at the hall of portraits of art. "
-                                                            "There is nothing here.", "Work", None,"Office", "Living",
+                                                            "There is nothing here.", "Work", None, "Office", "Living",
                                 None, None, None, "There is nothing in this room")
 Work = Room("Workroom", "You are at the workroom. There are 2 rooms.", None, "Hall_of_Portraits_of_art", "Lab",
             "Studio", None, None, None, "There is nothing in this room")
