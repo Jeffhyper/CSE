@@ -147,6 +147,9 @@ class GoldBar(Item):
     def use(self):
         print("It does nothing.")
 
+    def throw(self):
+        print("You threw the gold bar, but it came right back at your hand.")
+
 
 class Character(object):
     def __init__(self, name, health, description, death, items):
@@ -166,7 +169,8 @@ class Character(object):
 
 
 class Room (object):
-    def __init__(self, name, description, north, south, east, west, southeast, westnorth, item=None):
+    def __init__(self, name, description, north, south, east, west, southeast, westnorth, item=None,
+                 item_description=None):
         self.name = name
         self.description = description
         self.north = north
@@ -176,6 +180,7 @@ class Room (object):
         self.southeast = southeast
         self.westnorth = westnorth
         self.item = item
+        self.item_description = item_description
 
     def move(self, direction):
         global current_node
@@ -217,7 +222,7 @@ key = Key("Key", "The key has been dropped", "It did nothing", "It did nothing",
 jade = Jade("jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
             "This key can only open a door with a jade lock hole")
 gold = Gold("Golden Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the golden key out",
-           "This key can open a chest, not doors.")
+            "This key can open a chest, not doors.")
 
 # Characters
 character = Character("%s", 100, "Your job is to explore an old house and find the secret of the "
@@ -225,50 +230,51 @@ character = Character("%s", 100, "Your job is to explore an old house and find t
 
 # Rooms
 Main = Room("The main room", "You are at the main room. There are 4 rooms.", "Empty", None, None, None, None, None,
-            None)
-Empty = Room("Empty room", "You are at an empty room. There is a letter in the middle of the room.", None, "Main", None,
-             "Garage", None, None, letter)
-Garage = Room("Garage", "You are at a garage. There seems to be a jade key inside a toolbox.", "Kitchen", None, "Empty",
-              None, None, None, jade)
-Kitchen = Room("Kitchen", "You are at the kitchen. There is a hamburger by the microwave.", None, "Garage", "Diner",
-               None, None, "Box", hamburger)
-Diner = Room("Diner room", "You are at the diner room. There is a water bottle on the table.", None, None, "Resting",
-             "Kitchen", None, None, water_bottle)
+            None, "There is nothing in this room")
+Empty = Room("Empty room", "You are at an empty room.", None, "Main", None,
+             "Garage", None, None, letter, "There is a letter in the middle of the room.")
+Garage = Room("Garage", "You are at a garage.", "Kitchen", None, "Empty",
+              None, None, None, jade, "There in a jade key in a toolbox")
+Kitchen = Room("Kitchen", "You are at the kitchen.", None, "Garage", "Diner",
+               None, None, "Box", hamburger, "There is a hamburger by the microwave")
+Diner = Room("Diner room", "You are at the diner room.", None, None, "Resting",
+             "Kitchen", None, None, water_bottle, "There is a water bottle by the table.")
 Resting = Room("Resting room", "You are at a resting room. There are a lot of couches here.", "Quiet", None, None,
-               "Diner", None, None, None)
+               "Diner", None, None, None, "There is nothing in this room")
 Quiet = Room("Quiet room", "You are now in the quiet room. There are 3 rooms.", "Bed", "Resting", None, None, None,
-             None, None)
-Bed = Room("Bedroom", "You are in a bedroom. There seems to be a pair of gloves next to a bed.", "Computer",
-           "Quiet", None, "Office", None, None, gloves)
-Computer = Room("Computer room", "You are in a computer room. All computers seems to be open but turned off and "
-                                 "there's a health potion next to a computer.", None,
-                "Bed", None, None, None, None, health)
-Office = Room("Office", "You are in a office. There seems to be a note in one of the tables.", None, None, "Bed",
-              "Hall_of_Portraits_of_art", None, None, note)
-Hall_of_Portraits_of_art = Room("Hall of Portraits of art", "You are at the hall of portraits of art.", "Work", None,
-                                "Office", "Living", None, None, None)
+             None, None, "There is nothing in this room")
+Bed = Room("Bedroom", "You are in a bedroom.", "Computer", "Quiet", None, "Office", None, None, gloves,
+           "There are two gloves by the bed")
+Computer = Room("Computer room", "You are in a computer room. All computers seems to be open but turned off",
+                None,"Bed", None, None, None, None, health, "There is a health potion by one of the computers.")
+Office = Room("Office", "You are in a office.", None, None, "Bed",
+              "Hall_of_Portraits_of_art", None, None, note, "There is a note by the table")
+Hall_of_Portraits_of_art = Room("Hall of Portraits of art", "You are at the hall of portraits of art. "
+                                                            "There is nothing here.", "Work", None,"Office", "Living",
+                                None, None, None, "There is nothing in this room")
 Work = Room("Workroom", "You are at the workroom. There are 2 rooms.", None, "Hall_of_Portraits_of_art", "Lab",
-            "Studio", None, None, None)
-Lab = Room("Lab", "You are in the lab. There is a poison potion on a shelf.", None, None, None, "Work", None, None,
-           poison)
-Studio = Room("Studio", "You are in a studio. A gold bar seems to be shining at the corner of the room.",
-              None, None, "Work", None, None, None, gold_bar)
+            "Studio", None, None, None, "There is nothing in this room")
+Lab = Room("Lab", "You are in the lab.", None, None, None, "Work", None, None,
+           poison, "There is a poison potion on a shelf")
+Studio = Room("Studio", "You are in a studio.",
+              None, None, "Work", None, None, None, gold_bar,
+              "A gold bar seems to be shining at the corner of the room.")
 Living = Room("Living room", "You are at the living room. There are 2 rooms.", None, "Mini_Library",
-                             "Hall_of_Portraits_of_art", "Box", None, None, None)
-Mini_Library = Room("Mini Library", "You are in Mini library. There seems to be a green book on the the ground.",
-                    "Living", "Secret", None, None, None, None, green_book)
+                             "Hall_of_Portraits_of_art", "Box", None, None, None, "There is nothing in this room")
+Mini_Library = Room("Mini Library", "You are in Mini library.",
+                    "Living", "Secret", None, None, None, None, green_book,
+                    "There seems to be a green book on the the ground.")
 Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
-                             "There seems to be a lantern by the door it will help you see in the dark. "
                              "The closet is locked and needs a key.", "Mini_Library", "Camera", "Closet", None, None,
-                             None, lantern)
-Camera = Room("Camera room", "You are in a camera room. The camera's seems to show every room."
-                             "There is also an axe in a corner", "Secret", None, None, None, None, None, axe)
-Closet = Room("Closet", "You are in a closet. There is a golden key on top of the shelf.", None, None, None, "Secret",
-              None, None, gold)
+                             None, lantern, "There is a lantern by the door")
+Camera = Room("Camera room", "You are in a camera room. The camera's seems to show every room.", "Secret", None, None,
+              None, None, None, axe, "There is an axe by the chair")
+Closet = Room("Closet", "You are in a closet.", None, None, None, "Secret",
+              None, None, gold, "There a a golden key in here")
 Box = Room("Box room", "You are in a room of boxes. All boxes start to disappear, "
                        "a chest spawns in the middle of the room, a pirate appears out of nowhere. "
                        "You'll need to defeat it in order to get to the chest.", None, None, "Living", None,
-                       "Kitchen", None, chest)
+                       "Kitchen", None, chest, "There is a chest")
 
 current_node = Main
 directions = ['north', 'south', 'east', 'west', 'southeast', 'westnorth']
@@ -303,6 +309,8 @@ while True:
                     item.use()
                 elif isinstance(item, GoldBar):
                     item.use()
+                elif isinstance(item, Gold):
+                    item.open_doors()
     elif 'jump' in command:
         print("You jumped")
     elif 'read' in command:
@@ -367,10 +375,9 @@ while True:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Axe):
                     item.throw()
-    elif 'attack' in command:
-        item_requested = command[7:]
-        for item in character.inventory:
-            if item.name.lower() == item_requested.lower():
-                if isinstance(item, Axe):
+                elif isinstance(item, GoldBar):
+                    item.throw()
+    elif 'look' in command:
+        print(current_node.item_description)
     else:
         print("Command not recognized")
