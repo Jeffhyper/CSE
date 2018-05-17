@@ -132,7 +132,7 @@ class Chest(Item):
 
     def open(self):
         print("You've found the chest. You have completed the game, do you want to obtained all the items, "
-              "if yes put Obtain all items, if no put None")
+              "if yes put Obtain all items, if no put None. But after this, you can still obtain all items.")
 
 
 class Letter(Item):
@@ -170,16 +170,20 @@ class Character(object):
         self.health -= health
         print("You have taken damage.")
 
+
 class Pirate(object):
     def __init__(self, name, health, description):
         self.name = name
         self.health = health
         self.description = description
 
+    def __init__(self):
+        self.health -= health
+
 
 class Room (object):
     def __init__(self, name, description, north, south, east, west, southeast, westnorth, item=None,
-                 item_description=None):
+                 item_description=None, Pirate=None):
         self.name = name
         self.description = description
         self.north = north
@@ -190,10 +194,14 @@ class Room (object):
         self.westnorth = westnorth
         self.item = item
         self.item_description = item_description
+        self.Pirate = Pirate
 
     def move(self, direction):
         global current_node
         current_node = globals()[getattr(self, direction)]
+
+
+
 
 # Items
 gold_bar = GoldBar("Gold bar", "The item has been dropped", "It did nothing", "This item cannot defend you",
@@ -234,8 +242,11 @@ gold = Gold("Golden Key", "The key has been dropped", "It did nothing", "It did 
             "This key can open a chest, not doors.")
 
 # Characters
-character = Character("%s", 100, "Your job is to explore an old house and find the secret of the "
-                                 "chest that was made by a pirate.", "You have died", [])
+character = Character("You", "Health: 100", "Your job is to explore an old house and find the secret of the "
+                                            "chest that was made by a pirate.", "You have died", [])
+
+
+pirate = Pirate("Captain Holter,", "Health: 50", "This pirate protects the chest")
 
 
 # Rooms
@@ -284,7 +295,7 @@ Closet = Room("Closet", "You are in a closet.", None, None, None, "Secret",
 Box = Room("Box room", "You are in a room of boxes. All boxes start to disappear, "
                        "a chest spawns in the middle of the room, a pirate appears out of nowhere. "
                        "You'll need to defeat it in order to get to the chest.", None, None, "Living", None,
-                       "Kitchen", None, chest, "There is a chest")
+                       "Kitchen", None, chest, "There is a chest", Pirate)
 
 current_node = Main
 directions = ['north', 'south', 'east', 'west', 'southeast', 'westnorth']
@@ -389,5 +400,9 @@ while True:
                     item.throw()
     elif 'look' in command:
         print(current_node.item_description)
+    elif 'self' in command:
+        print(character.name)
+        print(character.health)
+        print(character.description)
     else:
         print("Command not recognized")
