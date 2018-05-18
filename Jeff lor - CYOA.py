@@ -205,7 +205,6 @@ class Room (object):
         current_node = globals()[getattr(self, direction)]
 
 
-
 # Items
 gold_bar = GoldBar("Gold bar", "The item has been dropped", "It did nothing", "This item cannot defend you",
                    "You took out the gold bar", "This item will lead you to the chest, but not always.")
@@ -296,7 +295,7 @@ Closet = Room("Closet", "You are in a closet.", None, None, None, "Secret",
 Box = Room("Box room", "You are in a room of boxes. All boxes start to disappear, "
                        "a chest spawns in the middle of the room, a pirate appears out of nowhere. "
                        "You'll need to defeat it in order to get to the chest.", None, None, "Living", None,
-                       "Kitchen", None, chest, "There is a chest", Pirate)
+                       "Kitchen", None, chest, "There is a chest", pirate)
 
 current_node = Main
 directions = ['north', 'south', 'east', 'west', 'southeast', 'westnorth']
@@ -369,6 +368,7 @@ while True:
                     item.drink()
                 elif isinstance(item, Health):
                     item.drink()
+                    character.health(100)
                 elif isinstance(item, Poison):
                     item.drink()
         if not found:
@@ -408,9 +408,13 @@ while True:
     elif 'attack' in command:
         character.attack(current_node.Pirate)
         if current_node.Pirate.health > 0:
+            if pirate.health <= 0:
+                print("The pirate died")
             current_node.Pirate.attack(character)
         if character.health <= 0:
             print("You died.")
             quit(0)
+    elif 'list' in command:
+        print(character.inventory)
     else:
         print("Command not recognized")
