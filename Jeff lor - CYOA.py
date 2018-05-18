@@ -126,7 +126,7 @@ class Note(Item):
         super(Note, self).__init__(name, drop, attack, defend, equip, description)
 
     def read_note(self):
-        print("Only one room has the key.")
+        print("Thanks for playing")
 
 
 class Chest(Item):
@@ -134,8 +134,7 @@ class Chest(Item):
         super(Chest, self).__init__(name, drop, attack, defend, equip, description)
 
     def open(self):
-        print("You've found the chest. You have completed the game, do you want to obtained all the items, "
-              "if yes put Obtain all items, if no put None. But after this, you can still obtain all items.")
+        print("You've found the chest. If you put Obtain all items, you can get all the items.")
 
 
 class Letter(Item):
@@ -172,6 +171,8 @@ class Character(object):
 
     def take_damage(self, health):
         self.health -= health
+        if self.health < 0:
+            self.health = 0
         print("%s has %d health left." % (self.name, self.health))
 
     def attack(self, target):
@@ -182,7 +183,6 @@ class Character(object):
 class Pirate(Character):
     def __init__(self, name, health, description):
         super(Pirate, self).__init__(name, health, description)
-
 
 
 class Room (object):
@@ -250,8 +250,8 @@ pirate = Pirate("Captain Holter,", 50, "This pirate protects the chest")
 
 
 # Rooms
-Main = Room("The main room", "You are at the main room. There are 4 rooms.", "Empty", None, None, None, None, None,
-            None, "There is nothing in this room", pirate)
+Main = Room("The main room", "You are at the main room. There are 4 rooms. There is an axe by you", "Empty", None,
+            None, None, None, None, axe, "There is an axe by you", pirate)
 Empty = Room("Empty room", "You are at an empty room.", None, "Main", None,
              "Garage", None, None, letter, "There is a letter in the middle of the room.")
 Garage = Room("Garage", "You are at a garage.", "Kitchen", None, "Empty",
@@ -289,13 +289,12 @@ Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
                              "The closet is locked and needs a key.", "Mini_Library", "Camera", "Closet", None, None,
                              None, lantern, "There is a lantern by the door")
 Camera = Room("Camera room", "You are in a camera room. The camera's seems to show every room.", "Secret", None, None,
-              None, None, None, axe, "There is an axe by the chair")
+              None, None, None, "There is nothing in this room")
 Closet = Room("Closet", "You are in a closet.", None, None, None, "Secret",
               None, None, gold, "There a a golden key in here")
 Box = Room("Box room", "You are in a room of boxes. All boxes start to disappear, "
-                       "a chest spawns in the middle of the room, a pirate appears out of nowhere. "
-                       "You'll need to defeat it in order to get to the chest.", None, None, "Living", None,
-                       "Kitchen", None, chest, "There is a chest", pirate)
+                       "it reveals a pirate, you can battle it. A chest spawns in the middle of the room",
+                       None, None, "Living", None, "Kitchen", None, chest, "There is a chest", pirate)
 
 current_node = Main
 directions = ['north', 'south', 'east', 'west', 'southeast', 'westnorth']
@@ -368,7 +367,7 @@ while True:
                     item.drink()
                 elif isinstance(item, Health):
                     item.drink()
-                    character.health(100)
+                    character.health += 30
                 elif isinstance(item, Poison):
                     item.drink()
         if not found:
@@ -406,15 +405,21 @@ while True:
         print(character.health)
         print(character.description)
     elif 'attack' in command:
-        character.attack(current_node.Pirate)
         if current_node.Pirate.health > 0:
-            if pirate.health <= 0:
-                print("The pirate died")
-            current_node.Pirate.attack(character)
-        if character.health <= 0:
-            print("You died.")
-            quit(0)
+            character.attack(current_node.Pirate)
+            if current_node.Pirate.health > 0:
+                if pirate.health <= 0:
+                    print("The pirate died")
+                current_node.Pirate.attack(character)
+            if character.health <= 0:
+                print("You died.")
+                quit(0)
+        else:
+            print("There is no pirate to fight.")
     elif 'list' in command:
-        print(character.inventory)
+        for item in character.inventory:
+            print(item.name)
+    elif 'obtain' in command:
+        for item
     else:
         print("Command not recognized")
