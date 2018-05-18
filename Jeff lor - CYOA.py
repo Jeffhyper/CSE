@@ -70,6 +70,9 @@ class Axe(Item):
     def throw(self):
         print("It is too heavy to throw it.")
 
+    def attack_with_axe(self):
+        print("You attacked with the axe")
+
 
 class Hamburger(Item):
     def __init__(self, name, drop, attack, defend, equip, description):
@@ -155,12 +158,13 @@ class GoldBar(Item):
 
 
 class Character(object):
-    def __init__(self, name, health, description, death, items):
+    def __init__(self, name, health, description, items=None):
+        if items is None:
+            items = []
         self.name = name
         self.health = health
         self.description = description
-        self.death = death
-        self.inventory = items  # list
+        self.inventory = items
 
     def pick_up_item(self, item):
         self.inventory.append(item)
@@ -168,17 +172,17 @@ class Character(object):
 
     def take_damage(self, health):
         self.health -= health
-        print("You have taken damage.")
+        print("%s has %d health left." % (self.name, self.health))
+
+    def attack(self, target):
+        print("%s attacks %s" % (self.name, target.name))
+        target.take_damage(30)
 
 
-class Pirate(object):
+class Pirate(Character):
     def __init__(self, name, health, description):
-        self.name = name
-        self.health = health
-        self.description = description
+        super(Pirate, self).__init__(name, health, description)
 
-    def __init__(self):
-        self.health -= health
 
 
 class Room (object):
@@ -199,7 +203,6 @@ class Room (object):
     def move(self, direction):
         global current_node
         current_node = globals()[getattr(self, direction)]
-
 
 
 
@@ -242,16 +245,14 @@ gold = Gold("Golden Key", "The key has been dropped", "It did nothing", "It did 
             "This key can open a chest, not doors.")
 
 # Characters
-character = Character("You", "Health: 100", "Your job is to explore an old house and find the secret of the "
-                                            "chest that was made by a pirate.", "You have died", [])
+character = Character("You", 100, "Your job is to explore an old house and find the chest that was made by a pirate.")
 
-
-pirate = Pirate("Captain Holter,", "Health: 50", "This pirate protects the chest")
+pirate = Pirate("Captain Holter,", 50, "This pirate protects the chest")
 
 
 # Rooms
 Main = Room("The main room", "You are at the main room. There are 4 rooms.", "Empty", None, None, None, None, None,
-            None, "There is nothing in this room")
+            None, "There is nothing in this room", pirate)
 Empty = Room("Empty room", "You are at an empty room.", None, "Main", None,
              "Garage", None, None, letter, "There is a letter in the middle of the room.")
 Garage = Room("Garage", "You are at a garage.", "Kitchen", None, "Empty",
@@ -404,5 +405,12 @@ while True:
         print(character.name)
         print(character.health)
         print(character.description)
+    elif 'attack' in command:
+        character.attack(current_node.Pirate)
+        if current_node.Pirate.health > 0:
+            current_node.Pirate.attack(character)
+        if character.health <= 0:
+            print("You died.")
+            quit(0)
     else:
         print("Command not recognized")
