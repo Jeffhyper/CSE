@@ -156,3 +156,11 @@ class GoldBar(Item):
 
     def use(self):
         print("It does nothing.")
+
+
+class Scroll(Item):
+    def __init__(self, name, drop, attack, defend, equip, description):
+        super(Scroll, self).__init__(name, drop, attack, defend, equip, description)
+
+    def read(self):
+        print("Thank you for playing")

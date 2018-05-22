@@ -95,8 +95,8 @@ class GreenBook(Item):
         super(GreenBook, self).__init__(name, drop, attack, defend, equip, description)
 
     def read(self):
-        print("The key was made by an old pirate many years ago. The purpose of the key is to open a chest. "
-              "Inside of the chest is a mystery.")
+        print("There was a pirate named Captain holter. He was sealed into one of the rooms by a genie. "
+              "Those who enter the room where he was sealed, didn't return")
 
 
 class Lantern(Item):
@@ -126,7 +126,7 @@ class Note(Item):
         super(Note, self).__init__(name, drop, attack, defend, equip, description)
 
     def read_note(self):
-        print("Thanks for playing")
+        print("The last key is in the closet")
 
 
 class Chest(Item):
@@ -134,7 +134,7 @@ class Chest(Item):
         super(Chest, self).__init__(name, drop, attack, defend, equip, description)
 
     def open(self):
-        print("You've found the chest. If you put Obtain all items, you can get all the items.")
+        print("You've found the chest. Thank you for playing")
 
 
 class Letter(Item):
@@ -178,6 +178,9 @@ class Character(object):
     def attack(self, target):
         print("%s attacks %s" % (self.name, target.name))
         target.take_damage(30)
+
+    def talk(self, person):
+        print("%s talks %s" % (self.name, person.name))
 
 
 class Pirate(Character):
@@ -244,20 +247,20 @@ gold = Gold("Golden Key", "The key has been dropped", "It did nothing", "It did 
             "This key can open a chest, not doors.")
 
 # Characters
-character = Character("You", 100, "Your job is to explore an old house and find the chest that was made by a pirate.")
+character = Character("You", 100, "Your job is to explore the house.")
 
 pirate = Pirate("Captain Holter,", 50, "This pirate protects the chest")
 
 
 # Rooms
 Main = Room("The main room", "You are at the main room. There are 4 rooms. There is an axe by you", "Empty", None,
-            None, None, None, None, axe, "There is an axe by you", pirate)
+            None, None, None, None, axe, "There is an axe by you")
 Empty = Room("Empty room", "You are at an empty room.", None, "Main", None,
              "Garage", None, None, letter, "There is a letter in the middle of the room.")
 Garage = Room("Garage", "You are at a garage.", "Kitchen", None, "Empty",
               None, None, None, jade, "There in a jade key in a toolbox")
-Kitchen = Room("Kitchen", "You are at the kitchen.", None, "Garage", "Diner",
-               None, None, "Box", hamburger, "There is a hamburger by the microwave")
+Kitchen = Room("Kitchen", "You are at the kitchen. The are chefs cooking", None, "Garage", "Diner",
+               None, None, None, hamburger, "There is a hamburger by the microwave")
 Diner = Room("Diner room", "You are at the diner room.", None, None, "Resting",
              "Kitchen", None, None, water_bottle, "There is a water bottle by the table.")
 Resting = Room("Resting room", "You are at a resting room. There are a lot of couches here.", "Quiet", None, None,
@@ -266,35 +269,34 @@ Quiet = Room("Quiet room", "You are now in the quiet room. There are 3 rooms.", 
              None, None, "There is nothing in this room")
 Bed = Room("Bedroom", "You are in a bedroom.", "Computer", "Quiet", None, "Office", None, None, gloves,
            "There are two gloves by the bed")
-Computer = Room("Computer room", "You are in a computer room. All computers seems to be open but turned off",
+Computer = Room("Computer room", "You are in a computer room. There are people typing",
                 None, "Bed", None, None, None, None, health, "There is a health potion by one of the computers.")
-Office = Room("Office", "You are in a office.", None, None, "Bed",
+Office = Room("Office", "You are in a office. There are people working", None, None, "Bed",
               "Hall_of_Portraits_of_art", None, None, note, "There is a note by the table")
 Hall_of_Portraits_of_art = Room("Hall of Portraits of art", "You are at the hall of portraits of art. "
                                                             "There is nothing here.", "Work", None, "Office", "Living",
                                 None, None, None, "There is nothing in this room")
 Work = Room("Workroom", "You are at the workroom. There are 2 rooms.", None, "Hall_of_Portraits_of_art", "Lab",
             "Studio", None, None, None, "There is nothing in this room")
-Lab = Room("Lab", "You are in the lab.", None, None, None, "Work", None, None,
-           poison, "There is a poison potion on a shelf")
-Studio = Room("Studio", "You are in a studio.",
-              None, None, "Work", None, None, None, gold_bar,
+Lab = Room("Lab", "You are in the lab. There are scientist working.", None, None, None, "Work", None, None,
+           poison, "There is a poison potion on a shelf",)
+Studio = Room("Studio", "You are in a studio. There are people recording.", None, None, "Work", None, None, None,
+              gold_bar,
               "A gold bar seems to be shining at the corner of the room.")
 Living = Room("Living room", "You are at the living room. There are 2 rooms.", None, "Mini_Library",
-                             "Hall_of_Portraits_of_art", "Box", None, None, None, "There is nothing in this room")
-Mini_Library = Room("Mini Library", "You are in Mini library.",
+                             "Hall_of_Portraits_of_art", None, None, None, None, "There is nothing in this room")
+Mini_Library = Room("Mini Library", "You are in Mini library. There are people reading books",
                     "Living", "Secret", None, None, None, None, green_book,
                     "There seems to be a green book on the the ground.")
 Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
-                             "The closet is locked and needs a key.", "Mini_Library", "Camera", "Closet", None, None,
+                             " The closet is locked and needs a key.", "Mini_Library", "Camera", None, None, None,
                              None, lantern, "There is a lantern by the door")
 Camera = Room("Camera room", "You are in a camera room. The camera's seems to show every room.", "Secret", None, None,
               None, None, None, "There is nothing in this room")
 Closet = Room("Closet", "You are in a closet.", None, None, None, "Secret",
               None, None, gold, "There a a golden key in here")
-Box = Room("Box room", "You are in a room of boxes. All boxes start to disappear, "
-                       "it reveals a pirate, you can battle it. A chest spawns in the middle of the room",
-                       None, None, "Living", None, "Kitchen", None, chest, "There is a chest", pirate)
+Box = Room("Box room", "You are in a room of boxes. All boxes start to disappear", None, None, "Living", None,
+           "Kitchen", None, chest, "The disappearance reveals a pirate an a chest", pirate)
 
 current_node = Main
 directions = ['north', 'south', 'east', 'west', 'southeast', 'westnorth']
@@ -323,14 +325,10 @@ while True:
         item_requested = command[4:]
         for item in character.inventory:
             if item.name.lower() == item_requested.lower():
-                if isinstance(item, Jade):
-                    item.open_jade_door()
-                elif isinstance(item, Gloves):
+                if isinstance(item, Gloves):
                     item.use()
                 elif isinstance(item, GoldBar):
                     item.use()
-                elif isinstance(item, Gold):
-                    item.open_doors()
     elif 'jump' in command:
         print("You jumped")
     elif 'read' in command:
@@ -349,6 +347,10 @@ while True:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Chest):
                     item.open()
+                elif isinstance(item, Jade):
+                    item.open_jade_door()
+                elif isinstance(item, Gold):
+                    item.open_doors()
     elif 'off' in command:
         item_requested = command[4:]
         for item in character.inventory:
@@ -419,7 +421,5 @@ while True:
     elif 'list' in command:
         for item in character.inventory:
             print(item.name)
-    elif 'obtain' in command:
-        for item
     else:
         print("Command not recognized")
