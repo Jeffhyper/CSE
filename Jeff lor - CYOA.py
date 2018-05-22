@@ -24,7 +24,7 @@ class Jade(Key):
         super(Jade, self).__init__(name, drop, attack, defend, equip, description)
 
     def open_jade_door(self):
-        Secret.east = 'closet'
+        Secret.east = 'Closet'
 
 
 class Gold(Key):
@@ -57,7 +57,7 @@ class Poison(Potion):
         super(Potion, self).__init__(name, drop, attack, defend, equip, description)
 
     def drink(self):
-        print("Your body starts to feel weird.")
+        print("Your body starts to feel weird. You died.")
 
 
 class Axe(Item):
@@ -134,7 +134,10 @@ class Chest(Item):
         super(Chest, self).__init__(name, drop, attack, defend, equip, description)
 
     def open(self):
-        print("You've found the chest. Thank you for playing")
+        print("This chest does not have a lock hole so it cannot be opened. There seems to be some words on the chest.")
+
+    def read(self):
+        print("Thank you for playing")
 
 
 class Letter(Item):
@@ -247,7 +250,7 @@ gold = Gold("Golden Key", "The key has been dropped", "It did nothing", "It did 
             "This key can open a chest, not doors.")
 
 # Characters
-character = Character("You", 100, "Your job is to explore the house.")
+character = Character("You", 100, "Your job is to explore a house and find all the items in the rooms.")
 
 pirate = Pirate("Captain Holter,", 50, "This pirate protects the chest")
 
@@ -271,7 +274,7 @@ Bed = Room("Bedroom", "You are in a bedroom.", "Computer", "Quiet", None, "Offic
            "There are two gloves by the bed")
 Computer = Room("Computer room", "You are in a computer room. There are people typing",
                 None, "Bed", None, None, None, None, health, "There is a health potion by one of the computers.")
-Office = Room("Office", "You are in a office. There are people working", None, None, "Bed",
+Office = Room("Office", "You are in a office. There are people working.", None, None, "Bed",
               "Hall_of_Portraits_of_art", None, None, note, "There is a note by the table")
 Hall_of_Portraits_of_art = Room("Hall of Portraits of art", "You are at the hall of portraits of art. "
                                                             "There is nothing here.", "Work", None, "Office", "Living",
@@ -329,6 +332,12 @@ while True:
                     item.use()
                 elif isinstance(item, GoldBar):
                     item.use()
+                elif isinstance(item, Jade):
+                    item.open_jade_door()
+                    print("A door unlocks")
+                elif isinstance(item, Gold):
+                    item.open_doors()
+                    print("A door unlocks")
     elif 'jump' in command:
         print("You jumped")
     elif 'read' in command:
@@ -341,16 +350,14 @@ while True:
                     item.read_note()
                 elif isinstance(item, GreenBook):
                     item.read()
+                elif isinstance(item, Chest):
+                    item.read()
     elif 'open' in command:
         item_requested = command[5:]
         for item in character.inventory:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Chest):
                     item.open()
-                elif isinstance(item, Jade):
-                    item.open_jade_door()
-                elif isinstance(item, Gold):
-                    item.open_doors()
     elif 'off' in command:
         item_requested = command[4:]
         for item in character.inventory:
@@ -367,11 +374,13 @@ while True:
                 found = True
                 if isinstance(item, WaterBottle):
                     item.drink()
+                    character.health += 10
                 elif isinstance(item, Health):
                     item.drink()
                     character.health += 30
                 elif isinstance(item, Poison):
                     item.drink()
+                    quit(0)
         if not found:
             print("You don't have that.")
     elif 'eat' in command:
@@ -380,6 +389,7 @@ while True:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Hamburger):
                     item.eat()
+                    character.health += 10
     elif 'swing' in command:
         item_requested = command[6:]
         for item in character.inventory:
