@@ -95,8 +95,9 @@ class GreenBook(Item):
         super(GreenBook, self).__init__(name, drop, attack, defend, equip, description)
 
     def read(self):
-        print("There was a pirate named Captain holter. He was sealed into one of the rooms by a genie. "
-              "Those who enter the room where he was sealed, didn't return")
+        print("There was a pirate named Captain holter. He was sealed into one of the rooms by a "
+              "genie and was also cursed and can never escape the room."
+              "Those who enter the room, where he was sealed, didn't return.")
 
 
 class Lantern(Item):
@@ -126,7 +127,7 @@ class Note(Item):
         super(Note, self).__init__(name, drop, attack, defend, equip, description)
 
     def read_note(self):
-        print("The last key is in the closet")
+        print("By using the keys, a door unlocks, you may not even know some of the doors are locked.")
 
 
 class Chest(Item):
@@ -156,7 +157,7 @@ class GoldBar(Item):
         print("It does nothing.")
 
     def throw(self):
-        print("You threw the gold bar, but it came right back at your hand.")
+        print("You threw the gold bar, it came right back at your hand.")
 
 
 class Character(object):
@@ -180,7 +181,8 @@ class Character(object):
 
     def attack(self, target):
         print("%s attacks %s" % (self.name, target.name))
-        target.take_damage(30)
+        target.take_damage(20)
+        target.take_damage.item.axe(30)
 
     def talk(self, person):
         print("%s talks %s" % (self.name, person.name))
@@ -213,29 +215,26 @@ class Room (object):
 
 # Items
 gold_bar = GoldBar("Gold bar", "The item has been dropped", "It did nothing", "This item cannot defend you",
-                   "You took out the gold bar", "This item will lead you to the chest, but not always.")
+                   "You took out the gold bar", "This item tells that there are a few more rooms to go")
 chest = Chest("Chest", "The chest has been dropped", "It is too heavy.", "It's too heavy to use this as a defense",
-              "You took the chest out", "The chest can only be open by a gold key.")
+              "You took the chest out", "The chest cannot be open.")
 letter = Letter("Letter", "The letter has been dropped", "The letter is not a weapon", "It cannot defend you.",
                 "You took out the letter", "The letter seems to say something.")
 note = Note("Note", "The note has been dropped", "It did nothing", "It did nothing", "You took out the note.",
-            "The note seems to tell were the last key could be.")
-gloves = Gloves("Gloves", "The gloves has been dropped", "It did nothing", "It did nothing", "You wear the gloves.",
-                "These gloves can handle such things like a poison potion."
-                "If it takes to many damage, it can disappear.")
+            "The note seems to tell what the keys do..")
+gloves = Gloves("Gloves", "The gloves has been dropped", "It did nothing", "It did nothing",
+                "You putted on the gloves.", "These gloves can be put on or off.")
 lantern = Lantern("Lantern", "The lantern has been dropped", "You can't use a lantern to attack",
                   "A lantern cannot defend you", "The lantern has been equipped",
-                  "The lantern can be turn on and it can help you see in the dark.")
+                  "The lantern can be turn on and turn off.")
 green_book = GreenBook("Green book", "The book has been dropped", "It did nothing", "It did nothing",
-                       "You took out the book", "The book seems to tell the back story of the golden key. "
-                       "You are only able to read half of it.")
+                       "You took out the book", "The book seems to tell the story of the pirate")
 water_bottle = WaterBottle("Water bottle", "The Item has been dropped", "It did nothing", "It did nothing",
-                           "You took out the bottle", "This is not any ordinary water, "
-                           "if you drink it you are able to hold a potion that is not holdable.")
+                           "You took out the bottle", "This water bottle can restore a little of your health.")
 hamburger = Hamburger("Hamburger", "The item has been dropped", "It did nothing", "It did nothing",
                       "You took out the hamburger", "When eaten, it can restore half of your health.")
 axe = Axe("Axe", "The axe has been dropped", "You swing the axe", "It protected you", "You took out the axe",
-          "The axe can only be use to attack and defend. If it takes to many damage, it can disappear")
+          "The axe can only be use to attack.")
 potion = Potion("Potion", "The potion has been dropped", "It did nothing", "It did nothing", "You took the potion out",
                 "There are two types of potions, health, and poison.")
 health = Health("Health potion", "The potion has been dropped", "It did nothing", "It did nothing",
@@ -245,61 +244,62 @@ poison = Poison("Poison potion", "The potion has been dropped", "It did nothing"
 key = Key("Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the key out",
           "There are two types of keys, Jade, and Gold.")
 jade = Jade("jade Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the jade key out",
-            "This key can only open a door with a jade lock hole")
+            "This key can only open one door.")
 gold = Gold("Golden Key", "The key has been dropped", "It did nothing", "It did nothing", "You took the golden key out",
-            "This key can open a chest, not doors.")
+            "This key can open one door.")
 
 # Characters
-character = Character("You", 100, "Your job is to explore a house and find all the items in the rooms.")
+character = Character("You", 100, "Your job is to explore a house and find all the items in the rooms, "
+                                  "you should have a total of 14 items.")
 
-pirate = Pirate("Captain Holter,", 50, "This pirate protects the chest")
+pirate = Pirate("Captain Holter", 50,
+                "This pirate is trapped in a room and will battle to escape the curse if he has to.")
 
 
 # Rooms
 Main = Room("The main room", "You are at the main room. There are 4 rooms. There is an axe by you", "Empty", None,
-            None, None, None, None, axe, "There is an axe by you")
+            None, None, None, None, axe, "There is an axe by you", "There is no pirate to attack")
 Empty = Room("Empty room", "You are at an empty room.", None, "Main", None,
-             "Garage", None, None, letter, "There is a letter in the middle of the room.")
+             "Garage", None, None, letter, "There is a letter in the middle of the room.", None)
 Garage = Room("Garage", "You are at a garage.", "Kitchen", None, "Empty",
-              None, None, None, jade, "There in a jade key in a toolbox")
+              None, None, None, jade, "There in a jade key in a toolbox", None)
 Kitchen = Room("Kitchen", "You are at the kitchen. The are chefs cooking", None, "Garage", "Diner",
-               None, None, None, hamburger, "There is a hamburger by the microwave")
+               None, None, None, hamburger, "There is a hamburger by the microwave", None)
 Diner = Room("Diner room", "You are at the diner room.", None, None, "Resting",
-             "Kitchen", None, None, water_bottle, "There is a water bottle by the table.")
-Resting = Room("Resting room", "You are at a resting room. There are a lot of couches here.", "Quiet", None, None,
-               "Diner", None, None, None, "There is nothing in this room")
+             "Kitchen", None, None, water_bottle, "There is a water bottle by the table.", None)
+Resting = Room("Resting room", "You are at a resting room. There are a lot of couches here. "
+                               "People already filled them up.", "Quiet", None, None,
+               "Diner", None, None, None, "There is nothing in this room", None)
 Quiet = Room("Quiet room", "You are now in the quiet room. There are 3 rooms.", "Bed", "Resting", None, None, None,
-             None, None, "There is nothing in this room")
+             None, None, "There is nothing in this room", None)
 Bed = Room("Bedroom", "You are in a bedroom.", "Computer", "Quiet", None, "Office", None, None, gloves,
-           "There are two gloves by the bed")
-Computer = Room("Computer room", "You are in a computer room. There are people typing",
-                None, "Bed", None, None, None, None, health, "There is a health potion by one of the computers.")
+           "There are two gloves by the bed", None)
+Computer = Room("Computer room", "You are in a computer room. There are people typing.",
+                None, "Bed", None, None, None, None, health, "There is a health potion by one of the computers.", None)
 Office = Room("Office", "You are in a office. There are people working.", None, None, "Bed",
-              "Hall_of_Portraits_of_art", None, None, note, "There is a note by the table")
+              "Hall_of_Portraits_of_art", None, None, note, "There is a note by the table", None)
 Hall_of_Portraits_of_art = Room("Hall of Portraits of art", "You are at the hall of portraits of art. "
                                                             "There is nothing here.", "Work", None, "Office", "Living",
-                                None, None, None, "There is nothing in this room")
+                                None, None, None, "There is nothing in this room", None)
 Work = Room("Workroom", "You are at the workroom. There are 2 rooms.", None, "Hall_of_Portraits_of_art", "Lab",
-            "Studio", None, None, None, "There is nothing in this room")
+            "Studio", None, None, None, "There is nothing in this room", None)
 Lab = Room("Lab", "You are in the lab. There are scientist working.", None, None, None, "Work", None, None,
-           poison, "There is a poison potion on a shelf",)
+           poison, "There is a poison potion on a shelf", None)
 Studio = Room("Studio", "You are in a studio. There are people recording.", None, None, "Work", None, None, None,
-              gold_bar,
-              "A gold bar seems to be shining at the corner of the room.")
+              gold_bar, "A gold bar seems to be shining at the corner of the room.", None)
 Living = Room("Living room", "You are at the living room. There are 2 rooms.", None, "Mini_Library",
                              "Hall_of_Portraits_of_art", None, None, None, None, "There is nothing in this room")
 Mini_Library = Room("Mini Library", "You are in Mini library. There are people reading books",
                     "Living", "Secret", None, None, None, None, green_book,
-                    "There seems to be a green book on the the ground.")
-Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms."
-                             " The closet is locked and needs a key.", "Mini_Library", "Camera", None, None, None,
-                             None, lantern, "There is a lantern by the door")
+                    "There seems to be a green book on the the ground.", None)
+Secret = Room("Secret Room", "You are in a secret room. There are 2 rooms.", "Mini_Library", "Camera", None, None, None,
+                             None, lantern, "There is a lantern by the door", None)
 Camera = Room("Camera room", "You are in a camera room. The camera's seems to show every room.", "Secret", None, None,
-              None, None, None, "There is nothing in this room")
+              None, None, None, None, "There is nothing in this room", None)
 Closet = Room("Closet", "You are in a closet.", None, None, None, "Secret",
-              None, None, gold, "There a a golden key in here")
+              None, None, gold, "There a a golden key in here", None)
 Box = Room("Box room", "You are in a room of boxes. All boxes start to disappear", None, None, "Living", None,
-           "Kitchen", None, chest, "The disappearance reveals a pirate an a chest", pirate)
+           "Kitchen", None, chest, "The disappearance reveals a pirate which is Captain holter an a chest", pirate)
 
 current_node = Main
 directions = ['north', 'south', 'east', 'west', 'southeast', 'westnorth']
@@ -374,7 +374,7 @@ while True:
                 found = True
                 if isinstance(item, WaterBottle):
                     item.drink()
-                    character.health += 10
+                    character.health += 9
                 elif isinstance(item, Health):
                     item.drink()
                     character.health += 30
@@ -389,15 +389,15 @@ while True:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Hamburger):
                     item.eat()
-                    character.health += 10
+                    character.health += 5
     elif 'swing' in command:
         item_requested = command[6:]
         for item in character.inventory:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Axe):
                     item.swing()
-    elif 'on' in command:
-        item_requested = command[3:]
+    elif 'turn on' in command:
+        item_requested = command[8:]
         for item in character.inventory:
             if item.name.lower() == item_requested.lower():
                 if isinstance(item, Lantern):
@@ -431,5 +431,13 @@ while True:
     elif 'list' in command:
         for item in character.inventory:
             print(item.name)
+    elif 'view' in command:
+        item_requested = command[5:]
+        for item in character.inventory:
+            print(item.description)
+    elif 'pirate data' in command:
+        print(pirate.name)
+        print(pirate.health)
+        print(pirate.description)
     else:
         print("Command not recognized")
